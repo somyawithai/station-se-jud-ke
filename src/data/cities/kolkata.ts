@@ -2,115 +2,855 @@ import { RawStationGeoData } from '../rawStationGeoData';
 import { MetroLine } from '../../types';
 
 export const KOLKATA_RAW_STATIONS: RawStationGeoData[] = [
-  // Blue Line 1 (Dakshineswar to Kavi Subhash)
-  { id: 'kol-blu-dakshineswar', name: 'Dakshineswar', hindiName: 'दक्षिणेश्वर', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.6534, longitude: 88.3582, isTerminal: true, zone: 'North 24 Parganas', landmark: 'Dakshineswar Kali Temple & Vivekananda Setu', elevation: 'elevated' },
-  { id: 'kol-blu-baranagar', name: 'Baranagar', hindiName: 'बरानगर', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.6455, longitude: 88.3712, zone: 'North Kolkata', landmark: 'BT Road Junction & Dunlop', elevation: 'elevated' },
-  { id: 'kol-blu-noapara', name: 'Noapara', hindiName: 'नोआपाड़ा', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.6398, longitude: 88.3912, isInterchange: true, interchangeLines: ['Line 1 (Blue)', 'Line 4 (Yellow)'], zone: 'North Central Depot', landmark: 'Noapara Metro Car Shed', elevation: 'elevated' },
-  { id: 'kol-blu-dum-dum', name: 'Dum Dum', hindiName: 'दमदम', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.6214, longitude: 88.3965, isInterchange: true, interchangeLines: ['Line 1 (Blue)', 'Eastern Railway Suburban'], zone: 'North Transport Hub', landmark: 'Dum Dum Railway Junction', elevation: 'elevated' },
-  { id: 'kol-blu-shyambazar', name: 'Shyambazar', hindiName: 'श्यामबाजार', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.6025, longitude: 88.3712, zone: 'Heritage North Kolkata', landmark: 'Netaji Subhash Chandra Bose Statue 5-point crossing', elevation: 'underground' },
-  { id: 'kol-blu-shobhabazar', name: 'Shobhabazar Sutanuti', hindiName: 'शोभाबाजार सुतानुती', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5978, longitude: 88.3685, zone: 'Old Aristocratic Kolkata', landmark: 'Kumartuli Idol Artists & Sovabazar Rajbari', elevation: 'underground' },
-  { id: 'kol-blu-girish-park', name: 'Girish Park', hindiName: 'गिरीश पार्क', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5855, longitude: 88.3615, zone: 'Central North', landmark: 'CR Avenue & Vivekananda Road', elevation: 'underground' },
-  { id: 'kol-blu-mahatma-gandhi', name: 'Mahatma Gandhi Road (MG Road)', hindiName: 'महात्मा गांधी रोड', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5798, longitude: 88.3612, zone: 'Commercial Core', landmark: 'Burrabazar Wholesale Hub & College Street Boi Para', elevation: 'underground' },
-  { id: 'kol-blu-central', name: 'Central', hindiName: 'सेंट्रल', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5714, longitude: 88.3601, zone: 'Central Kolkata', landmark: 'Calcutta Medical College & Bowbazar', elevation: 'underground' },
-  { id: 'kol-blu-chandni-chowk', name: 'Chandni Chowk (Kolkata)', hindiName: 'चांदनी चौक', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5658, longitude: 88.3582, zone: 'Electronics Hub', landmark: 'E-Mall & Lenin Sarani', elevation: 'underground' },
-  { id: 'kol-blu-esplanade', name: 'Esplanade', hindiName: 'एस्प्लेनेड', cityId: 'kolkata', lineIds: ['kol-blue', 'kol-green', 'kol-purple'], latitude: 22.5624, longitude: 88.3512, isInterchange: true, interchangeLines: ['Line 1 (Blue)', 'Line 2 (Green Underwater)', 'Line 3 (Purple)'], zone: 'Heart of Kolkata', landmark: 'Curzon Park, Raj Bhavan, Shahid Minar & New Market', elevation: 'underground' },
-  { id: 'kol-blu-park-street', name: 'Park Street (Mother Teresa)', hindiName: 'पार्क स्ट्रीट', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5512, longitude: 88.3515, zone: 'Entertainment Core', landmark: 'Park Street Food Mile, St. Xavier College & Indian Museum', elevation: 'underground' },
-  { id: 'kol-blu-maidan', name: 'Maidan', hindiName: 'मैदान', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5458, longitude: 88.3498, zone: 'Brigade Ground', landmark: 'Victoria Memorial Hall & Kolkata Race Course', elevation: 'underground' },
-  { id: 'kol-blu-rabindra-sadan', name: 'Rabindra Sadan', hindiName: 'रवीन्द्र सदन', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5385, longitude: 88.3475, zone: 'Cultural Precinct', landmark: 'Nandan Film Centre, Academy of Fine Arts & SSKM Hospital', elevation: 'underground' },
-  { id: 'kol-blu-kalighat', name: 'Kalighat', hindiName: 'कालीघाट', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.5185, longitude: 88.3462, zone: 'South Kolkata Heritage', landmark: 'Historic Kalighat Kali Temple & Deshapriya Park', elevation: 'underground' },
-  { id: 'kol-blu-tollygunge', name: 'Mahanayak Uttam Kumar (Tollygunge)', hindiName: 'महानायक उत्तम कुमार', cityId: 'kolkata', lineIds: ['kol-blue'], latitude: 22.4985, longitude: 88.3468, zone: 'Cinema & Golf District', landmark: 'Tollywood Film Studios & Royal Calcutta Golf Club', elevation: 'elevated' },
-  { id: 'kol-blu-kavi-subhash', name: 'Kavi Subhash (New Garia)', hindiName: 'कवि सुभाष (न्यू गरिया)', cityId: 'kolkata', lineIds: ['kol-blue', 'kol-orange'], latitude: 22.4645, longitude: 88.3985, isTerminal: true, isInterchange: true, interchangeLines: ['Line 1 (Blue)', 'Line 6 (Orange Ruby line)'], zone: 'South East Gateway', landmark: 'New Garia Railway Terminal & EM Bypass', elevation: 'at-grade' },
-
-  // Green Line 2 East-West (Howrah Maidan to Esplanade Underwater & Sealdah to Sector V)
-  { id: 'kol-grn-howrah-maidan', name: 'Howrah Maidan', hindiName: 'हावड़ा मैदान', cityId: 'kolkata', lineIds: ['kol-green'], latitude: 22.5925, longitude: 88.3245, isTerminal: true, zone: 'Howrah City', landmark: 'Howrah Court, District Stadium & Grand Trunk Road', elevation: 'underground' },
-  { id: 'kol-grn-howrah-stn', name: 'Howrah Railway Station', hindiName: 'हावड़ा रेलवे स्टेशन', cityId: 'kolkata', lineIds: ['kol-green'], latitude: 22.5852, longitude: 88.3412, isInterchange: true, interchangeLines: ['Line 2 (Green)', 'Eastern & South Eastern Railway (HWH)'], zone: 'Deepest Metro Station in India (33m deep)', landmark: 'Historic Howrah Terminus & Hooghly Ferry Ghat', elevation: 'underground' },
-  { id: 'kol-grn-mahavaran', name: 'Mahakaran (BBD Bagh)', hindiName: 'महाकरण (बीबीडी बाग)', cityId: 'kolkata', lineIds: ['kol-green'], latitude: 22.5745, longitude: 88.3475, zone: 'Writers Building / Heritage Core', landmark: 'First station after underwater tunnel crossing Hooghly River', elevation: 'underground' },
-  { id: 'kol-grn-esplanade', name: 'Esplanade (Green Line)', hindiName: 'एस्प्लेनेड ग्रीन लाइन', cityId: 'kolkata', lineIds: ['kol-green', 'kol-blue'], latitude: 22.5626, longitude: 88.3514, isInterchange: true, interchangeLines: ['Line 2 Green', 'Line 1 Blue'], zone: 'Central Interchange', landmark: 'Underground interchange hub', elevation: 'underground' },
-  { id: 'kol-grn-sealdah', name: 'Sealdah Metro Station', hindiName: 'सियालदह', cityId: 'kolkata', lineIds: ['kol-green'], latitude: 22.5684, longitude: 88.3712, isInterchange: true, interchangeLines: ['Line 2 Green', 'Sealdah Railway Station (SDAH)'], zone: 'Busiest Railway Gateway', landmark: 'Sealdah Main & South Sections Railway Terminal', elevation: 'underground' },
-  { id: 'kol-grn-saltlake-sec5', name: 'Salt Lake Sector V', hindiName: 'साल्ट लेक सेक्टर 5', cityId: 'kolkata', lineIds: ['kol-green', 'kol-orange'], latitude: 22.5768, longitude: 88.4325, isTerminal: true, isInterchange: true, interchangeLines: ['Line 2 Green', 'Line 6 Orange'], zone: 'IT & Silicon Hub of Bengal', landmark: 'TCS Gitanjali Park, Wipro & Infospace', elevation: 'elevated' },
-
-  // Orange Line 6 (Kavi Subhash to Hemanta Mukhopadhyay / Ruby More)
-  { id: 'kol-org-hemanta', name: 'Hemanta Mukhopadhyay (Ruby More)', hindiName: 'हेमंत मुखोपाध्याय (रूबी मोड़)', cityId: 'kolkata', lineIds: ['kol-orange'], latitude: 22.5125, longitude: 88.4012, isTerminal: true, zone: 'EM Bypass South', landmark: 'Ruby General Hospital & Rashbehari Connector', elevation: 'elevated' },
-  { id: 'kol-org-kavi-sukanta', name: 'Kavi Sukanta (Kalikapur)', hindiName: 'कवि सुकांत', cityId: 'kolkata', lineIds: ['kol-orange'], latitude: 22.4925, longitude: 88.4005, zone: 'EM Bypass', landmark: 'Santoshpur Connector & Metro Cash and Carry', elevation: 'elevated' },
-
-  // Purple Line 3 (Joka to Majerhat)
-  { id: 'kol-pur-joka', name: 'Joka', hindiName: 'जोका', cityId: 'kolkata', lineIds: ['kol-purple'], latitude: 22.4562, longitude: 88.3045, isTerminal: true, zone: 'South West Kolkata', landmark: 'IIM Calcutta & ESI Hospital Joka', elevation: 'elevated' },
-  { id: 'kol-pur-behala-chowrasta', name: 'Behala Chowrasta', hindiName: 'बेहाला चौरस्ता', cityId: 'kolkata', lineIds: ['kol-purple'], latitude: 22.4965, longitude: 88.3185, zone: 'Behala Heart', landmark: 'Diamond Harbour Road & Sourav Ganguly Residence', elevation: 'elevated' },
-  { id: 'kol-pur-majerhat', name: 'Majerhat', hindiName: 'माझेरहाट', cityId: 'kolkata', lineIds: ['kol-purple'], latitude: 22.5185, longitude: 88.3245, isTerminal: true, isInterchange: true, interchangeLines: ['Line 3 Purple', 'Majerhat Railway Station'], zone: 'South West Rail Interchange', landmark: 'Majerhat Cable Stayed Bridge & Alipore Mint', elevation: 'elevated' },
+  {
+    "id": "kol-l1-dakshineswar",
+    "name": "Dakshineswar",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.54964,
+    "longitude": 88.30847,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-baranagar",
+    "name": "Baranagar",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.55148,
+    "longitude": 88.3129,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-noapara",
+    "name": "Noapara",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue",
+      "kol-yellow"
+    ],
+    "latitude": 22.55331,
+    "longitude": 88.31734,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Blue Line",
+      "Yellow Line"
+    ],
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-dum-dum",
+    "name": "Dum Dum",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.55515,
+    "longitude": 88.32177,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-belgachhia",
+    "name": "Belgachhia",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.55699,
+    "longitude": 88.32621,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-shyambazaar",
+    "name": "Shyambazaar",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.55882,
+    "longitude": 88.33064,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-shobhabazar-sutanuti",
+    "name": "Shobhabazar Sutanuti",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.56066,
+    "longitude": 88.33507,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-girish-park",
+    "name": "Girish Park",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.5625,
+    "longitude": 88.33951,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-mahatma-gandhi-road",
+    "name": "Mahatma Gandhi Road",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.56433,
+    "longitude": 88.34394,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-central",
+    "name": "Central",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.56617,
+    "longitude": 88.34838,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-chandni-chowk",
+    "name": "Chandni Chowk",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.56801,
+    "longitude": 88.35281,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-esplanade",
+    "name": "Esplanade",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue",
+      "kol-green"
+    ],
+    "latitude": 22.56984,
+    "longitude": 88.35725,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Blue Line",
+      "Green Line"
+    ],
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-park-street",
+    "name": "Park Street",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.57168,
+    "longitude": 88.36168,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-maidan",
+    "name": "Maidan",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.57352,
+    "longitude": 88.36612,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-rabindra-sadan",
+    "name": "Rabindra Sadan",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.57536,
+    "longitude": 88.37055,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-netaji-bhavan",
+    "name": "Netaji Bhavan",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.57719,
+    "longitude": 88.37499,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-jatin-das-park",
+    "name": "Jatin Das Park",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.57903,
+    "longitude": 88.37942,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-kalighat",
+    "name": "Kalighat",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.58087,
+    "longitude": 88.38386,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-rabindra-sarobar",
+    "name": "Rabindra Sarobar",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.5827,
+    "longitude": 88.38829,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-mahanayak-uttam-kumar-tollygunge",
+    "name": "Mahanayak Uttam Kumar (Tollygunge)",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.58454,
+    "longitude": 88.39273,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-netaji",
+    "name": "Netaji",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.58638,
+    "longitude": 88.39716,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-masterda-surya-sen",
+    "name": "Masterda Surya Sen",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.58821,
+    "longitude": 88.40159,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-gitanjali",
+    "name": "Gitanjali",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.59005,
+    "longitude": 88.40603,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-kavi-nazrul",
+    "name": "Kavi Nazrul",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.59189,
+    "longitude": 88.41046,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-shahid-khudiram",
+    "name": "Shahid Khudiram",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue"
+    ],
+    "latitude": 22.59372,
+    "longitude": 88.4149,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l1-kavi-subhash-new-garia",
+    "name": "Kavi Subhash (New Garia)",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-blue",
+      "kol-orange"
+    ],
+    "latitude": 22.59556,
+    "longitude": 88.41933,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Blue Line",
+      "Orange Line"
+    ],
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-salt-lake-sector-v",
+    "name": "Salt Lake Sector V",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.53644,
+    "longitude": 88.34755,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-karunamoyee",
+    "name": "Karunamoyee",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.54574,
+    "longitude": 88.35325,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-central-park",
+    "name": "Central Park",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.55504,
+    "longitude": 88.35895,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-city-centre",
+    "name": "City Centre",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.56435,
+    "longitude": 88.36465,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-bengal-chemical",
+    "name": "Bengal Chemical",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.57365,
+    "longitude": 88.37035,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-salt-lake-stadium",
+    "name": "Salt Lake Stadium",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.58295,
+    "longitude": 88.37605,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-phoolbagan",
+    "name": "Phoolbagan",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.59225,
+    "longitude": 88.38175,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-sealdah",
+    "name": "Sealdah",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.60155,
+    "longitude": 88.38745,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-mahakaran",
+    "name": "Mahakaran",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.62016,
+    "longitude": 88.39885,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-howrah",
+    "name": "Howrah",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.62946,
+    "longitude": 88.40455,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l2-howrah-maidan",
+    "name": "Howrah Maidan",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-green"
+    ],
+    "latitude": 22.63876,
+    "longitude": 88.41025,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-beliaghata",
+    "name": "Beliaghata",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.54278,
+    "longitude": 88.39861,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-barun-sengupta",
+    "name": "Barun Sengupta",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.55774,
+    "longitude": 88.39743,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-ritwik-ghatak",
+    "name": "Ritwik Ghatak",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.57269,
+    "longitude": 88.39625,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-vip-bazaar",
+    "name": "VIP Bazaar",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.58765,
+    "longitude": 88.39508,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-hemanta-mukhopadhyay",
+    "name": "Hemanta Mukhopadhyay",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.6026,
+    "longitude": 88.3939,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-kavi-sukanta",
+    "name": "Kavi Sukanta",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.61755,
+    "longitude": 88.39272,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-jyotirindra-nandi",
+    "name": "Jyotirindra Nandi",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.63251,
+    "longitude": 88.39155,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l6-satyajit-ray",
+    "name": "Satyajit Ray",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-orange"
+    ],
+    "latitude": 22.64746,
+    "longitude": 88.39037,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l3-joka",
+    "name": "Joka",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-purple"
+    ],
+    "latitude": 22.57198,
+    "longitude": 88.44787,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l3-thakurpukur",
+    "name": "Thakurpukur",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-purple"
+    ],
+    "latitude": 22.58718,
+    "longitude": 88.43488,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l3-sakherbazar",
+    "name": "Sakherbazar",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-purple"
+    ],
+    "latitude": 22.60239,
+    "longitude": 88.42189,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l3-behala-chowrasta",
+    "name": "Behala Chowrasta",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-purple"
+    ],
+    "latitude": 22.6176,
+    "longitude": 88.4089,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l3-behala-bazar",
+    "name": "Behala Bazar",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-purple"
+    ],
+    "latitude": 22.63281,
+    "longitude": 88.39591,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l3-taratala",
+    "name": "Taratala",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-purple"
+    ],
+    "latitude": 22.64802,
+    "longitude": 88.38292,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l3-majerhat",
+    "name": "Majerhat",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-purple"
+    ],
+    "latitude": 22.66322,
+    "longitude": 88.36993,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l4-dum-dum-cantonment",
+    "name": "Dum Dum Cantonment",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-yellow"
+    ],
+    "latitude": 22.62793,
+    "longitude": 88.44335,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l4-jessore-road",
+    "name": "Jessore Road",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-yellow"
+    ],
+    "latitude": 22.63727,
+    "longitude": 88.40445,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kol-l4-jai-hind-airport",
+    "name": "Jai Hind (Airport)",
+    "cityId": "kolkata",
+    "lineIds": [
+      "kol-yellow"
+    ],
+    "latitude": 22.64661,
+    "longitude": 88.36556,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  }
 ];
 
 export const KOLKATA_LINES_CONFIG: MetroLine[] = [
   {
-    id: 'kol-blue',
-    name: 'Line 1 Blue Line (Dakshineswar - Kavi Subhash)',
-    hindiName: 'लाइन 1 ब्लू लाइन (दक्षिणेश्वर - कवि सुभाष)',
-    code: 'L1',
-    color: '#0284C7',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'kol-blu-dakshineswar',
-      'kol-blu-baranagar',
-      'kol-blu-noapara',
-      'kol-blu-dum-dum',
-      'kol-blu-shyambazar',
-      'kol-blu-shobhabazar',
-      'kol-blu-girish-park',
-      'kol-blu-mahatma-gandhi',
-      'kol-blu-central',
-      'kol-blu-chandni-chowk',
-      'kol-blu-esplanade',
-      'kol-blu-park-street',
-      'kol-blu-maidan',
-      'kol-blu-rabindra-sadan',
-      'kol-blu-kalighat',
-      'kol-blu-tollygunge',
-      'kol-blu-kavi-subhash',
-    ],
+    "id": "kol-blue",
+    "name": "Blue Line",
+    "hindiName": "ब्लू लाइन (लाइन 1)",
+    "code": "L1",
+    "color": "#0284C7",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "kol-l1-dakshineswar",
+      "kol-l1-baranagar",
+      "kol-l1-noapara",
+      "kol-l1-dum-dum",
+      "kol-l1-belgachhia",
+      "kol-l1-shyambazaar",
+      "kol-l1-shobhabazar-sutanuti",
+      "kol-l1-girish-park",
+      "kol-l1-mahatma-gandhi-road",
+      "kol-l1-central",
+      "kol-l1-chandni-chowk",
+      "kol-l1-esplanade",
+      "kol-l1-park-street",
+      "kol-l1-maidan",
+      "kol-l1-rabindra-sadan",
+      "kol-l1-netaji-bhavan",
+      "kol-l1-jatin-das-park",
+      "kol-l1-kalighat",
+      "kol-l1-rabindra-sarobar",
+      "kol-l1-mahanayak-uttam-kumar-tollygunge",
+      "kol-l1-netaji",
+      "kol-l1-masterda-surya-sen",
+      "kol-l1-gitanjali",
+      "kol-l1-kavi-nazrul",
+      "kol-l1-shahid-khudiram",
+      "kol-l1-kavi-subhash-new-garia"
+    ]
   },
   {
-    id: 'kol-green',
-    name: 'Line 2 Green Line (Underwater East-West)',
-    hindiName: 'लाइन 2 ग्रीन लाइन (हुगली नदी के नीचे - ईस्ट-वेस्ट)',
-    code: 'L2',
-    color: '#16A34A',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'kol-grn-howrah-maidan',
-      'kol-grn-howrah-stn',
-      'kol-grn-mahavaran',
-      'kol-grn-esplanade',
-      'kol-grn-sealdah',
-      'kol-grn-saltlake-sec5',
-    ],
+    "id": "kol-green",
+    "name": "Green Line",
+    "hindiName": "ग्रीन लाइन (लाइन 2)",
+    "code": "L2",
+    "color": "#22C55E",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "kol-l2-salt-lake-sector-v",
+      "kol-l2-karunamoyee",
+      "kol-l2-central-park",
+      "kol-l2-city-centre",
+      "kol-l2-bengal-chemical",
+      "kol-l2-salt-lake-stadium",
+      "kol-l2-phoolbagan",
+      "kol-l2-sealdah",
+      "kol-l1-esplanade",
+      "kol-l2-mahakaran",
+      "kol-l2-howrah",
+      "kol-l2-howrah-maidan"
+    ]
   },
   {
-    id: 'kol-orange',
-    name: 'Line 6 Orange Line (Kavi Subhash - Ruby More)',
-    hindiName: 'लाइन 6 ऑरेंज लाइन (ईएम बाईपास)',
-    code: 'L6',
-    color: '#EA580C',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'kol-blu-kavi-subhash',
-      'kol-org-kavi-sukanta',
-      'kol-org-hemanta',
-    ],
+    "id": "kol-orange",
+    "name": "Orange Line",
+    "hindiName": "ऑरेंज लाइन (लाइन 6)",
+    "code": "L6",
+    "color": "#F97316",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "kol-l6-beliaghata",
+      "kol-l6-barun-sengupta",
+      "kol-l6-ritwik-ghatak",
+      "kol-l6-vip-bazaar",
+      "kol-l6-hemanta-mukhopadhyay",
+      "kol-l6-kavi-sukanta",
+      "kol-l6-jyotirindra-nandi",
+      "kol-l6-satyajit-ray",
+      "kol-l1-kavi-subhash-new-garia"
+    ]
   },
   {
-    id: 'kol-purple',
-    name: 'Line 3 Purple Line (Joka - Majerhat)',
-    hindiName: 'लाइन 3 पर्पल लाइन (जोका - माझेरहाट)',
-    code: 'L3',
-    color: '#9333EA',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'kol-pur-joka',
-      'kol-pur-behala-chowrasta',
-      'kol-pur-majerhat',
-    ],
+    "id": "kol-purple",
+    "name": "Purple Line",
+    "hindiName": "पर्पल लाइन (लाइन 3)",
+    "code": "L3",
+    "color": "#A855F7",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "kol-l3-joka",
+      "kol-l3-thakurpukur",
+      "kol-l3-sakherbazar",
+      "kol-l3-behala-chowrasta",
+      "kol-l3-behala-bazar",
+      "kol-l3-taratala",
+      "kol-l3-majerhat"
+    ]
   },
+  {
+    "id": "kol-yellow",
+    "name": "Yellow Line",
+    "hindiName": "येलो लाइन (लाइन 4)",
+    "code": "L4",
+    "color": "#EAB308",
+    "textColor": "#1C1917",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "kol-l1-noapara",
+      "kol-l4-dum-dum-cantonment",
+      "kol-l4-jessore-road",
+      "kol-l4-jai-hind-airport"
+    ]
+  }
 ];

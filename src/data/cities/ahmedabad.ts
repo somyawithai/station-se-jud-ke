@@ -2,87 +2,829 @@ import { RawStationGeoData } from '../rawStationGeoData';
 import { MetroLine } from '../../types';
 
 export const AHMEDABAD_RAW_STATIONS: RawStationGeoData[] = [
-  // Blue Line (East-West Corridor: Thaltej Gam to Vastral Gam)
-  { id: 'ahm-blu-thaltej-gam', name: 'Thaltej Gam', hindiName: 'थलतेज गाम', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0552, longitude: 72.5085, isTerminal: true, zone: 'West Ahmedabad', landmark: 'SG Highway & Thaltej Lake', elevation: 'elevated' },
-  { id: 'ahm-blu-thaltej', name: 'Thaltej', hindiName: 'थलतेज', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0505, longitude: 72.5185, zone: 'West Residential', landmark: 'Acropolis Mall & SG Highway Junction', elevation: 'elevated' },
-  { id: 'ahm-blu-doordarshan', name: 'Doordarshan Kendra', hindiName: 'दूरदर्शन केंद्र', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0458, longitude: 72.5312, zone: 'Drive-in Road', landmark: 'Drive-in Cinema & TV Tower', elevation: 'elevated' },
-  { id: 'ahm-blu-gurukul-rd', name: 'Gurukul Road', hindiName: 'गुरुकुल रोड', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0485, longitude: 72.5425, zone: 'Memnagar', landmark: 'Swaminarayan Gurukul & Himalaya Mall', elevation: 'elevated' },
-  { id: 'ahm-blu-gujarat-univ', name: 'Gujarat University', hindiName: 'गुजरात यूनिवर्सिटी', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0385, longitude: 72.5498, zone: 'Education Hub', landmark: 'Gujarat University, LD Engineering & Physical Research Lab (PRL)', elevation: 'elevated' },
-  { id: 'ahm-blu-commerce-six', name: 'Commerce Six Road', hindiName: 'कॉमर्स सिक्स रोड', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0365, longitude: 72.5585, zone: 'Navrangpura', landmark: 'HL College of Commerce & CG Road', elevation: 'elevated' },
-  { id: 'ahm-blu-stadium', name: 'SP Stadium (Old Navrangpura)', hindiName: 'एसपी स्टेडियम', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0412, longitude: 72.5685, zone: 'Navrangpura', landmark: 'Sardar Vallabhbhai Patel Stadium Navrangpura', elevation: 'elevated' },
-  { id: 'ahm-blu-old-high-court', name: 'Old High Court', hindiName: 'ओल्ड हाई कोर्ट (इंटरचेंज)', cityId: 'ahmedabad', lineIds: ['ahm-blue', 'ahm-red'], latitude: 23.0398, longitude: 72.5714, isInterchange: true, interchangeLines: ['Blue Line (East-West)', 'Red Line (North-South)'], zone: 'Central Interchange Hub', landmark: 'Income Tax Circle & Ashram Road Riverfront', elevation: 'elevated' },
-  { id: 'ahm-blu-shahpur', name: 'Shahpur (Riverfront Underground)', hindiName: 'शाहपुर', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0382, longitude: 72.5812, zone: 'Sabarmati Riverfront West/East', landmark: 'Sabarmati River Under-river Crossing & Old Walled City', elevation: 'underground' },
-  { id: 'ahm-blu-gheekanta', name: 'Gheekanta', hindiName: 'घीकांटा', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0285, longitude: 72.5885, zone: 'Historic Walled City', landmark: 'Bhadra Fort, Teen Darwaza & Relief Road', elevation: 'underground' },
-  { id: 'ahm-blu-kalupur-rail', name: 'Kalupur (Ahmedabad Central Railway)', hindiName: 'कालूपुर रेलवे स्टेशन', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0245, longitude: 72.6005, isInterchange: true, interchangeLines: ['Blue Line', 'Ahmedabad Railway Station (ADI)', 'Future Bullet Train Station'], zone: 'Major Transit Hub', landmark: 'Ahmedabad Junction & National Bullet Train Terminal', elevation: 'underground' },
-  { id: 'ahm-blu-kankaria-east', name: 'Kankaria East', hindiName: 'कांकरिया पूर्व', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0112, longitude: 72.6105, zone: 'Kankaria Lake Precinct', landmark: 'Historic Kankaria Lake & Zoo Gate', elevation: 'underground' },
-  { id: 'ahm-blu-apparel-park', name: 'Apparel Park', hindiName: 'अपैरल पार्क', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0085, longitude: 72.6245, zone: 'Textile Hub', landmark: 'GIDC Apparel Park & Metro Depot', elevation: 'elevated' },
-  { id: 'ahm-blu-vastral-gam', name: 'Vastral Gam', hindiName: 'वस्त्राल गाम', cityId: 'ahmedabad', lineIds: ['ahm-blue'], latitude: 23.0025, longitude: 72.6612, isTerminal: true, zone: 'East Suburbs', landmark: 'SP Ring Road Vastral', elevation: 'elevated' },
-
-  // Red Line (North-South Corridor: APMC to Motera Stadium / GNLU Sector 1 Gandhinagar)
-  { id: 'ahm-red-apmc', name: 'APMC Vasna', hindiName: 'एपीएमसी वासना', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 22.9865, longitude: 72.5485, isTerminal: true, zone: 'South West', landmark: 'Agricultural Produce Market Committee & Vasna Barrage', elevation: 'elevated' },
-  { id: 'ahm-red-jivraj-park', name: 'Jivraj Park', hindiName: 'जीवराज पार्क', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 22.9985, longitude: 72.5412, zone: 'South Residential', landmark: 'Jivraj Mehta Hospital', elevation: 'elevated' },
-  { id: 'ahm-red-shreyas', name: 'Shreyas', hindiName: 'श्रेयस', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0125, longitude: 72.5498, zone: 'Ambawadi', landmark: 'Shreyas Foundation & Manekbaug', elevation: 'elevated' },
-  { id: 'ahm-red-paldi', name: 'Paldi', hindiName: 'पालड़ी', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0185, longitude: 72.5645, zone: 'Ashram Road South', landmark: 'National Institute of Design (NID) & Sanskar Kendra', elevation: 'elevated' },
-  { id: 'ahm-red-gandhigram', name: 'Gandhigram', hindiName: 'गांधीग्राम', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0285, longitude: 72.5695, zone: 'Ashram Road Central', landmark: 'Ellis Bridge, Town Hall & Nehru Bridge', elevation: 'elevated' },
-  { id: 'ahm-red-usmanpura', name: 'Usmanpura', hindiName: 'उस्मानपुरा', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0485, longitude: 72.5712, zone: 'Ashram Road North', landmark: 'Ahmedabad Municipal Corporation West Office & Fortune Landmark', elevation: 'elevated' },
-  { id: 'ahm-red-vijaynagar', name: 'Vijaynagar', hindiName: 'विजयनगर', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0612, longitude: 72.5724, zone: 'Naranpura', landmark: 'Naranpura Cross Roads', elevation: 'elevated' },
-  { id: 'ahm-red-vadaj', name: 'Vadaj', hindiName: 'वाडज', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0685, longitude: 72.5745, zone: 'Transit Bus Hub', landmark: 'Vadaj AMTS/BRTS Terminal & Dandi Bridge', elevation: 'elevated' },
-  { id: 'ahm-red-ranip', name: 'Ranip', hindiName: 'रानीप', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0785, longitude: 72.5785, isInterchange: true, interchangeLines: ['Red Line', 'GSRTC Central Bus Port'], zone: 'North Bus Terminal', landmark: 'GSRTC Ranip Central Bus Port', elevation: 'elevated' },
-  { id: 'ahm-red-sabarmati-rail', name: 'Sabarmati Railway Station', hindiName: 'साबरमती रेलवे स्टेशन', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0845, longitude: 72.5835, isInterchange: true, interchangeLines: ['Red Line', 'Sabarmati Railway Junction (SBT) & Bullet Train Terminal'], zone: 'High Speed Rail Hub', landmark: 'Sabarmati High Speed Rail Terminal', elevation: 'elevated' },
-  { id: 'ahm-red-motera-stadium', name: 'Narendra Modi Stadium (Motera)', hindiName: 'नरेंद्र मोदी स्टेडियम (मोटेरा)', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.0924, longitude: 72.5975, isInterchange: true, interchangeLines: ['Red Line', 'Gandhinagar Phase 2 Extension'], zone: 'Cricket Capital of the World', landmark: 'World largest Cricket Stadium (132,000 capacity)', elevation: 'elevated' },
-  { id: 'ahm-red-gnlu-gandhinagar', name: 'GNLU (Gandhinagar)', hindiName: 'जीएनएलयू (गांधीनगर)', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.1542, longitude: 72.6285, zone: 'Knowledge Corridor', landmark: 'Gujarat National Law University & PDPU', elevation: 'elevated' },
-  { id: 'ahm-red-gandhinagar-sec1', name: 'Sector 1 (Gandhinagar Capital)', hindiName: 'सेक्टर 1 (गांधीनगर)', cityId: 'ahmedabad', lineIds: ['ahm-red'], latitude: 23.2185, longitude: 72.6485, isTerminal: true, zone: 'Gujarat Capital Core', landmark: 'Infocity, CH-Road & State Secretariat', elevation: 'elevated' },
+  {
+    "id": "ahm-ew-thaltej-gam",
+    "name": "Thaltej Gam",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 22.99954,
+    "longitude": 72.51597,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-thaltej",
+    "name": "Thaltej",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.00224,
+    "longitude": 72.52249,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-doordarshan-kendra",
+    "name": "Doordarshan Kendra",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.00494,
+    "longitude": 72.52901,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-gurukul-road",
+    "name": "Gurukul Road",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.00764,
+    "longitude": 72.53553,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-gujarat-university",
+    "name": "Gujarat University",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.01034,
+    "longitude": 72.54205,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-commerce-six-road",
+    "name": "Commerce Six Road",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.01305,
+    "longitude": 72.54857,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-sp-stadium",
+    "name": "SP Stadium",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.01575,
+    "longitude": 72.5551,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-old-high-court",
+    "name": "Old High Court",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue",
+      "ahm-red"
+    ],
+    "latitude": 23.01845,
+    "longitude": 72.56162,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Blue Line",
+      "Red Line"
+    ],
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-shahpur",
+    "name": "Shahpur",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.02115,
+    "longitude": 72.56814,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-ghee-kanta",
+    "name": "Ghee Kanta",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.02385,
+    "longitude": 72.57466,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-kalupur",
+    "name": "Kalupur",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.02655,
+    "longitude": 72.58118,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-kankaria-east",
+    "name": "Kankaria East",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.02925,
+    "longitude": 72.5877,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-apparel-park",
+    "name": "Apparel Park",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.03195,
+    "longitude": 72.59423,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-amraivadi",
+    "name": "Amraivadi",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.03466,
+    "longitude": 72.60075,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-rabari-colony",
+    "name": "Rabari Colony",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.03736,
+    "longitude": 72.60727,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-vastral",
+    "name": "Vastral",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.04006,
+    "longitude": 72.61379,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-nirant-cross-road",
+    "name": "Nirant Cross Road",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.04276,
+    "longitude": 72.62031,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ew-vastral-gam",
+    "name": "Vastral Gam",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-blue"
+    ],
+    "latitude": 23.04546,
+    "longitude": 72.62683,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-motera-stadium",
+    "name": "Motera Stadium",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red",
+      "ahm-yellow"
+    ],
+    "latitude": 22.98207,
+    "longitude": 72.56344,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Red Line",
+      "Yellow Line"
+    ],
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-sabarmati",
+    "name": "Sabarmati",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 22.98999,
+    "longitude": 72.56672,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-aec",
+    "name": "AEC",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 22.99791,
+    "longitude": 72.57,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-sabarmati-railway-station",
+    "name": "Sabarmati Railway Station",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.00582,
+    "longitude": 72.57328,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-ranip",
+    "name": "Ranip",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.01374,
+    "longitude": 72.57656,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-vadaj",
+    "name": "Vadaj",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.02166,
+    "longitude": 72.57984,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-vijay-nagar",
+    "name": "Vijay Nagar",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.02958,
+    "longitude": 72.58312,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-usmanpura",
+    "name": "Usmanpura",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.0375,
+    "longitude": 72.5864,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-gandhigram",
+    "name": "Gandhigram",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.05334,
+    "longitude": 72.59296,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-paldi",
+    "name": "Paldi",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.06126,
+    "longitude": 72.59624,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-shreyas",
+    "name": "Shreyas",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.06918,
+    "longitude": 72.59952,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-rajiv-nagar",
+    "name": "Rajiv Nagar",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.07709,
+    "longitude": 72.6028,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-jivraj-park",
+    "name": "Jivraj Park",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.08501,
+    "longitude": 72.60608,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-ns-apmc",
+    "name": "APMC",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-red"
+    ],
+    "latitude": 23.09293,
+    "longitude": 72.60936,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-vio-gnlu",
+    "name": "GNLU",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-violet",
+      "ahm-yellow"
+    ],
+    "latitude": 22.99707,
+    "longitude": 72.62436,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Violet Line",
+      "Yellow Line"
+    ],
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-vio-pdpu",
+    "name": "PDPU",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-violet"
+    ],
+    "latitude": 23.0525,
+    "longitude": 72.6014,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-vio-gift-city",
+    "name": "Gift City",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-violet"
+    ],
+    "latitude": 23.10793,
+    "longitude": 72.57844,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-mahatma-mandir",
+    "name": "Mahatma Mandir",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.04454,
+    "longitude": 72.67183,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-sector-24",
+    "name": "Sector 24",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.04684,
+    "longitude": 72.66629,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-sector-16",
+    "name": "Sector 16",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.04913,
+    "longitude": 72.66075,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-juna-sachivalaya",
+    "name": "Juna Sachivalaya",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.05143,
+    "longitude": 72.6552,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-akshardham",
+    "name": "Akshardham",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.05372,
+    "longitude": 72.64966,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-sachivalaya",
+    "name": "Sachivalaya",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.05602,
+    "longitude": 72.64412,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-sector-10a",
+    "name": "Sector 10A",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.05832,
+    "longitude": 72.63857,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-sector-1",
+    "name": "Sector 1",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.06061,
+    "longitude": 72.63303,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-infocity",
+    "name": "Infocity",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.06291,
+    "longitude": 72.62749,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-dholakuva-circle",
+    "name": "Dholakuva Circle",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.0652,
+    "longitude": 72.62194,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-randesan",
+    "name": "Randesan",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.0675,
+    "longitude": 72.6164,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-raysan",
+    "name": "Raysan",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.0698,
+    "longitude": 72.61086,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-koba-gam",
+    "name": "Koba Gam",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.07439,
+    "longitude": 72.59977,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-juna-koba",
+    "name": "Juna Koba",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.07668,
+    "longitude": 72.59423,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-koba-circle",
+    "name": "Koba Circle",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.07898,
+    "longitude": 72.58868,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-narmada-canal",
+    "name": "Narmada Canal",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.08128,
+    "longitude": 72.58314,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-tapovan-circle",
+    "name": "Tapovan Circle",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.08357,
+    "longitude": 72.5776,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-vishwakarma-college",
+    "name": "Vishwakarma College",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.08587,
+    "longitude": 72.57205,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "ahm-yel-koteshwar-road",
+    "name": "Koteshwar Road",
+    "cityId": "ahmedabad",
+    "lineIds": [
+      "ahm-yellow"
+    ],
+    "latitude": 23.08816,
+    "longitude": 72.56651,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  }
 ];
 
 export const AHMEDABAD_LINES_CONFIG: MetroLine[] = [
   {
-    id: 'ahm-blue',
-    name: 'Blue Line (Thaltej Gam - Vastral Gam)',
-    hindiName: 'ब्लू लाइन (ईस्ट-वेस्ट कॉरिडोर)',
-    code: 'EW',
-    color: '#0284C7',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'ahm-blu-thaltej-gam',
-      'ahm-blu-thaltej',
-      'ahm-blu-doordarshan',
-      'ahm-blu-gurukul-rd',
-      'ahm-blu-gujarat-univ',
-      'ahm-blu-commerce-six',
-      'ahm-blu-stadium',
-      'ahm-blu-old-high-court',
-      'ahm-blu-shahpur',
-      'ahm-blu-gheekanta',
-      'ahm-blu-kalupur-rail',
-      'ahm-blu-kankaria-east',
-      'ahm-blu-apparel-park',
-      'ahm-blu-vastral-gam',
-    ],
+    "id": "ahm-blue",
+    "name": "Blue Line",
+    "hindiName": "ब्लू लाइन",
+    "code": "EW",
+    "color": "#0284C7",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "ahm-ew-thaltej-gam",
+      "ahm-ew-thaltej",
+      "ahm-ew-doordarshan-kendra",
+      "ahm-ew-gurukul-road",
+      "ahm-ew-gujarat-university",
+      "ahm-ew-commerce-six-road",
+      "ahm-ew-sp-stadium",
+      "ahm-ew-old-high-court",
+      "ahm-ew-shahpur",
+      "ahm-ew-ghee-kanta",
+      "ahm-ew-kalupur",
+      "ahm-ew-kankaria-east",
+      "ahm-ew-apparel-park",
+      "ahm-ew-amraivadi",
+      "ahm-ew-rabari-colony",
+      "ahm-ew-vastral",
+      "ahm-ew-nirant-cross-road",
+      "ahm-ew-vastral-gam"
+    ]
   },
   {
-    id: 'ahm-red',
-    name: 'Red Line (APMC - Motera Stadium - Gandhinagar)',
-    hindiName: 'रेड लाइन (नॉर्थ-साउथ एवं गांधीनगर कॉरिडोर)',
-    code: 'NS',
-    color: '#EF4444',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'ahm-red-apmc',
-      'ahm-red-jivraj-park',
-      'ahm-red-shreyas',
-      'ahm-red-paldi',
-      'ahm-red-gandhigram',
-      'ahm-blu-old-high-court',
-      'ahm-red-usmanpura',
-      'ahm-red-vijaynagar',
-      'ahm-red-vadaj',
-      'ahm-red-ranip',
-      'ahm-red-sabarmati-rail',
-      'ahm-red-motera-stadium',
-      'ahm-red-gnlu-gandhinagar',
-      'ahm-red-gandhinagar-sec1',
-    ],
+    "id": "ahm-red",
+    "name": "Red Line",
+    "hindiName": "रेड लाइन",
+    "code": "NS",
+    "color": "#EF4444",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "ahm-ns-motera-stadium",
+      "ahm-ns-sabarmati",
+      "ahm-ns-aec",
+      "ahm-ns-sabarmati-railway-station",
+      "ahm-ns-ranip",
+      "ahm-ns-vadaj",
+      "ahm-ns-vijay-nagar",
+      "ahm-ns-usmanpura",
+      "ahm-ew-old-high-court",
+      "ahm-ns-gandhigram",
+      "ahm-ns-paldi",
+      "ahm-ns-shreyas",
+      "ahm-ns-rajiv-nagar",
+      "ahm-ns-jivraj-park",
+      "ahm-ns-apmc"
+    ]
   },
+  {
+    "id": "ahm-violet",
+    "name": "Violet Line",
+    "hindiName": "वायलेट लाइन",
+    "code": "VIO",
+    "color": "#8B5CF6",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "ahm-vio-gnlu",
+      "ahm-vio-pdpu",
+      "ahm-vio-gift-city"
+    ]
+  },
+  {
+    "id": "ahm-yellow",
+    "name": "Yellow Line",
+    "hindiName": "येलो लाइन",
+    "code": "YEL",
+    "color": "#F59E0B",
+    "textColor": "#1C1917",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "ahm-yel-mahatma-mandir",
+      "ahm-yel-sector-24",
+      "ahm-yel-sector-16",
+      "ahm-yel-juna-sachivalaya",
+      "ahm-yel-akshardham",
+      "ahm-yel-sachivalaya",
+      "ahm-yel-sector-10a",
+      "ahm-yel-sector-1",
+      "ahm-yel-infocity",
+      "ahm-yel-dholakuva-circle",
+      "ahm-yel-randesan",
+      "ahm-yel-raysan",
+      "ahm-vio-gnlu",
+      "ahm-yel-koba-gam",
+      "ahm-yel-juna-koba",
+      "ahm-yel-koba-circle",
+      "ahm-yel-narmada-canal",
+      "ahm-yel-tapovan-circle",
+      "ahm-yel-vishwakarma-college",
+      "ahm-yel-koteshwar-road",
+      "ahm-ns-motera-stadium"
+    ]
+  }
 ];

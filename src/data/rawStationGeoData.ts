@@ -8,12 +8,14 @@ export interface RawStationGeoData {
   lineIds: string[];
   latitude: number;
   longitude: number;
+  sequence?: number;
   isInterchange?: boolean;
   interchangeLines?: string[];
   isTerminal?: boolean;
   zone?: string;
   landmark?: string;
   elevation?: 'underground' | 'elevated' | 'at-grade';
+  status?: 'operational' | 'under-construction';
 }
 
 // 1. DELHI NCR REAL GEO STATIONS
@@ -194,6 +196,8 @@ export const convertStationsToCityNetwork = (
       zone: st.zone,
       landmark: st.landmark,
       elevation: st.elevation,
+      sequence: st.sequence,
+      status: st.status,
     };
   });
 };

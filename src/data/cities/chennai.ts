@@ -2,84 +2,617 @@ import { RawStationGeoData } from '../rawStationGeoData';
 import { MetroLine } from '../../types';
 
 export const CHENNAI_RAW_STATIONS: RawStationGeoData[] = [
-  // Blue Line 1 (Wimco Nagar Depot to Chennai Airport)
-  { id: 'chn-blu-wimco-depot', name: 'Wimco Nagar Depot', hindiName: 'विमको नगर डिपो', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.1785, longitude: 80.3012, isTerminal: true, zone: 'North Chennai', landmark: 'Ennore Express Highway', elevation: 'elevated' },
-  { id: 'chn-blu-wimco-nagar', name: 'Wimco Nagar', hindiName: 'विमको नगर', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.1698, longitude: 80.3025, zone: 'North Chennai Industrial', landmark: 'Wimco Match Factory', elevation: 'elevated' },
-  { id: 'chn-blu-tollgate', name: 'Tollgate', hindiName: 'टोलगेट', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.1362, longitude: 80.2985, zone: 'North Chennai Coastal', landmark: 'Tondiarpet & Port Access Road', elevation: 'elevated' },
-  { id: 'chn-blu-washermanpet', name: 'Washermanpet', hindiName: 'वाशरमैनपेट', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.1098, longitude: 80.2845, isInterchange: true, interchangeLines: ['Blue Line', 'Chennai Suburban North Line'], zone: 'Old North Chennai', landmark: 'Sir Theagaraya Road North', elevation: 'underground' },
-  { id: 'chn-blu-mannadi', name: 'Mannadi', hindiName: 'मन्नाडी', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0925, longitude: 80.2862, zone: 'George Town Trade', landmark: 'Broadway Bus Stand & Chennai Port Gate', elevation: 'underground' },
-  { id: 'chn-blu-high-court', name: 'High Court', hindiName: 'हाई कोर्ट', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0865, longitude: 80.2868, zone: 'Legal & Historic Core', landmark: 'Madras High Court & Fort St. George', elevation: 'underground' },
-  { id: 'chn-blu-central', name: 'Puratchi Thalaivar Dr. M.G. Ramachandran Central (Central Metro)', hindiName: 'एमजीआर सेंट्रल मेट्रो', cityId: 'chennai', lineIds: ['chn-blue', 'chn-green'], latitude: 13.0825, longitude: 80.2758, isInterchange: true, interchangeLines: ['Blue Line', 'Green Line', 'Puratchi Thalaivar Dr. M.G.R. Central Railway (MAS)'], zone: 'Grand Central Interchange', landmark: 'Chennai Central Terminus, Ripon Building & Southern Railway HQ', elevation: 'underground' },
-  { id: 'chn-blu-lic', name: 'LIC', hindiName: 'एलआईसी', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0645, longitude: 80.2675, zone: 'Anna Salai Core', landmark: 'LIC Building (1st Skyscraper in Chennai) & Spencer Plaza', elevation: 'underground' },
-  { id: 'chn-blu-thousand-lights', name: 'Thousand Lights', hindiName: 'थाउजेंड लाइट्स', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0565, longitude: 80.2542, zone: 'Central Heart', landmark: 'Historic Thousand Lights Mosque & Apollo Hospitals Greams Rd', elevation: 'underground' },
-  { id: 'chn-blu-teynampet', name: 'Teynampet', hindiName: 'तेनाम्पेट', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0402, longitude: 79.98 > 75 ? 80.2485 : 80.2485, zone: 'Anna Salai Arterial', landmark: 'SIET College, DMK Headquarters Anna Arivalayam & Eldams Rd', elevation: 'underground' },
-  { id: 'chn-blu-nandanam', name: 'Nandanam', hindiName: 'नंदनम', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0305, longitude: 80.2398, zone: 'Commercial District', landmark: 'YMCA Grounds & Chamier Road', elevation: 'underground' },
-  { id: 'chn-blu-saidapet', name: 'Saidapet', hindiName: 'सैदापेट', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0212, longitude: 80.2245, zone: 'Adyar River North', landmark: 'Maraimalai Adigalar Bridge & Saidapet Court', elevation: 'underground' },
-  { id: 'chn-blu-guindy', name: 'Guindy', hindiName: 'गिंडी', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 13.0085, longitude: 80.2132, isInterchange: true, interchangeLines: ['Blue Line', 'Chennai Suburban Railway'], zone: 'South Industrial & Tech', landmark: 'Guindy National Park, IIT Madras entrance & Raj Bhavan', elevation: 'elevated' },
-  { id: 'chn-blu-meenambakkam', name: 'Meenambakkam', hindiName: 'मीनम्बाक्कम', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 12.9865, longitude: 80.1785, zone: 'Airport Periphery', landmark: 'Old Airport Terminal & Cargo Complex', elevation: 'elevated' },
-  { id: 'chn-blu-airport', name: 'Chennai International Airport', hindiName: 'चेन्नई इंटरनेशनल एयरपोर्ट', cityId: 'chennai', lineIds: ['chn-blue'], latitude: 12.9802, longitude: 80.1645, isTerminal: true, zone: 'Aviation Gateway', landmark: 'Domestic & International Terminals (MAA) & Multi-level Parking', elevation: 'elevated' },
-
-  // Green Line 2 (Chennai Central to St. Thomas Mount)
-  { id: 'chn-grn-egmore', name: 'Egmore Metro', hindiName: 'एग्मोर', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0785, longitude: 80.2612, isInterchange: true, interchangeLines: ['Green Line', 'Chennai Egmore Railway Junction (MS)'], zone: 'Major Rail Gateway', landmark: 'Historic Egmore Gothic Station & Government Museum', elevation: 'underground' },
-  { id: 'chn-grn-nehru-park', name: 'Nehru Park', hindiName: 'नेहरू पार्क', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0782, longitude: 80.2458, zone: 'Kilpauk', landmark: 'Poonamallee High Road & Sangam Cinemas', elevation: 'underground' },
-  { id: 'chn-grn-shenoy-nagar', name: 'Shenoy Nagar', hindiName: 'शेनॉय नगर', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0788, longitude: 80.2285, zone: 'Central West', landmark: 'Thiru Vi Ka Park', elevation: 'underground' },
-  { id: 'chn-grn-anna-nagar-e', name: 'Anna Nagar East', hindiName: 'अन्ना नगर पूर्व', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0852, longitude: 80.2185, zone: 'Upscale Anna Nagar', landmark: '2nd Avenue & Chintamani Junction', elevation: 'underground' },
-  { id: 'chn-grn-anna-nagar-tower', name: 'Anna Nagar Tower', hindiName: 'अन्ना नगर टावर', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0858, longitude: 80.2085, zone: 'Anna Nagar West', landmark: 'Visveswaraya Tower Park & Roundtana', elevation: 'underground' },
-  { id: 'chn-grn-koyambedu', name: 'Koyambedu', hindiName: 'कोयम्बेडु', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0725, longitude: 80.1945, zone: 'Transit & Wholesale Core', landmark: 'Puratchi Thalaivar Dr. MGR Bus Terminus (CMBT) & Wholesale Vegetable Market', elevation: 'elevated' },
-  { id: 'chn-grn-vadapalani', name: 'Vadapalani', hindiName: 'वडपलानी', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0512, longitude: 80.2112, zone: 'Cinema & Commercial Hub', landmark: 'Vadapalani Murugan Temple, Forum Vijaya Mall & AVM Studios', elevation: 'elevated' },
-  { id: 'chn-grn-ashok-nagar', name: 'Ashok Nagar', hindiName: 'अशोक नगर', cityId: 'chennai', lineIds: ['chn-green'], latitude: 13.0365, longitude: 80.2118, zone: 'South Central', landmark: 'Ashok Pillar Monument & Udhayam Complex', elevation: 'elevated' },
-  { id: 'chn-grn-alandur', name: 'Alandur (Asarhana)', hindiName: 'आलंदूर', cityId: 'chennai', lineIds: ['chn-green', 'chn-blue'], latitude: 13.0042, longitude: 80.2015, isInterchange: true, interchangeLines: ['Green Line', 'Blue Line'], zone: 'Multi-Level Elevated Interchange', landmark: 'Grand Southern Trunk (GST) Road & Kathipara Cloverleaf Flyover', elevation: 'elevated' },
-  { id: 'chn-grn-st-thomas-mount', name: 'St. Thomas Mount', hindiName: 'सेंट थॉमस माउंट', cityId: 'chennai', lineIds: ['chn-green'], latitude: 12.9958, longitude: 80.1985, isTerminal: true, isInterchange: true, interchangeLines: ['Green Line', 'Chennai Suburban South Line', 'MRTS'], zone: 'South Gateway Interchange', landmark: 'St. Thomas Mount Historic Hill & Shrine', elevation: 'elevated' },
+  {
+    "id": "che-l1-wimco-nagar-depot",
+    "name": "Wimco Nagar Depot",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.06213,
+    "longitude": 80.21434,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-wimco-nagar",
+    "name": "Wimco Nagar",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.06377,
+    "longitude": 80.21885,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-thiruvottriyur",
+    "name": "Thiruvottriyur",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.06542,
+    "longitude": 80.22336,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-thiruvottriyur-theradi",
+    "name": "Thiruvottriyur Theradi",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.06706,
+    "longitude": 80.22786,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-kaladipet",
+    "name": "Kaladipet",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.06871,
+    "longitude": 80.23237,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-tollgate",
+    "name": "Tollgate",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.07036,
+    "longitude": 80.23688,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-new-washermanpet",
+    "name": "New Washermanpet",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.072,
+    "longitude": 80.24139,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-tondiarpet",
+    "name": "Tondiarpet",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.07365,
+    "longitude": 80.2459,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-sir-theagaraya-college",
+    "name": "Sir Theagaraya College",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.07529,
+    "longitude": 80.25041,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-washermanpet",
+    "name": "Washermanpet",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.07694,
+    "longitude": 80.25492,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-mannadi",
+    "name": "Mannadi",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.07859,
+    "longitude": 80.25943,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-high-court",
+    "name": "High Court",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.08023,
+    "longitude": 80.26394,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-mgr-central-chennai-central",
+    "name": "MGR Central (Chennai Central)",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue",
+      "che-green"
+    ],
+    "latitude": 13.08188,
+    "longitude": 80.26845,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Blue Line",
+      "Green Line"
+    ],
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-government-estate",
+    "name": "Government Estate",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.08352,
+    "longitude": 80.27295,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-lic",
+    "name": "LIC",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.08517,
+    "longitude": 80.27746,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-thousand-lights",
+    "name": "Thousand Lights",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.08681,
+    "longitude": 80.28197,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-ag-dms",
+    "name": "AG DMS",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.08846,
+    "longitude": 80.28648,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-teynampet",
+    "name": "Teynampet",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.09011,
+    "longitude": 80.29099,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-nandanam",
+    "name": "Nandanam",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.09175,
+    "longitude": 80.2955,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-saidapet",
+    "name": "Saidapet",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.0934,
+    "longitude": 80.30001,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-little-mount",
+    "name": "Little Mount",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.09504,
+    "longitude": 80.30452,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-guindy",
+    "name": "Guindy",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.09669,
+    "longitude": 80.30903,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-arignar-anna-alandur",
+    "name": "Arignar Anna Alandur",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue",
+      "che-green"
+    ],
+    "latitude": 13.09834,
+    "longitude": 80.31354,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Blue Line",
+      "Green Line"
+    ],
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-nanganallur-road",
+    "name": "Nanganallur Road",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.09998,
+    "longitude": 80.31804,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-meenambakkam",
+    "name": "Meenambakkam",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.10163,
+    "longitude": 80.32255,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l1-chennai-international-airport",
+    "name": "Chennai International Airport",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-blue"
+    ],
+    "latitude": 13.10327,
+    "longitude": 80.32706,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-egmore",
+    "name": "Egmore",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.1157,
+    "longitude": 80.23638,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-nehru-park",
+    "name": "Nehru Park",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.11313,
+    "longitude": 80.24343,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-kilpauk-medical-college",
+    "name": "Kilpauk Medical College",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.11056,
+    "longitude": 80.25047,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-pachaiyappa-college",
+    "name": "Pachaiyappa College",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.10799,
+    "longitude": 80.25752,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-shenoy-nagar",
+    "name": "Shenoy Nagar",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.10542,
+    "longitude": 80.26456,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-anna-nagar-east",
+    "name": "Anna Nagar East",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.10284,
+    "longitude": 80.27161,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-anna-nagar-tower",
+    "name": "Anna Nagar Tower",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.10027,
+    "longitude": 80.27865,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-thirumangalam",
+    "name": "Thirumangalam",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.0977,
+    "longitude": 80.2857,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-koyambedu",
+    "name": "Koyambedu",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.09513,
+    "longitude": 80.29275,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-cmbt",
+    "name": "CMBT",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.09256,
+    "longitude": 80.29979,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-arumbakkam",
+    "name": "Arumbakkam",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.08998,
+    "longitude": 80.30684,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-vadapalani",
+    "name": "Vadapalani",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.08741,
+    "longitude": 80.31388,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-ashok-nagar",
+    "name": "Ashok Nagar",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.08484,
+    "longitude": 80.32093,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-ekkattuthangal",
+    "name": "Ekkattuthangal",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.08227,
+    "longitude": 80.32797,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "che-l2-st-thomas-mount",
+    "name": "St Thomas Mount",
+    "cityId": "chennai",
+    "lineIds": [
+      "che-green"
+    ],
+    "latitude": 13.07713,
+    "longitude": 80.34206,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  }
 ];
 
 export const CHENNAI_LINES_CONFIG: MetroLine[] = [
   {
-    id: 'chn-blue',
-    name: 'Blue Line (Wimco Nagar - Airport)',
-    hindiName: 'ब्लू लाइन (विमको नगर - एयरपोर्ट)',
-    code: 'L1',
-    color: '#0284C7',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'chn-blu-wimco-depot',
-      'chn-blu-wimco-nagar',
-      'chn-blu-tollgate',
-      'chn-blu-washermanpet',
-      'chn-blu-mannadi',
-      'chn-blu-high-court',
-      'chn-blu-central',
-      'chn-blu-lic',
-      'chn-blu-thousand-lights',
-      'chn-blu-teynampet',
-      'chn-blu-nandanam',
-      'chn-blu-saidapet',
-      'chn-blu-guindy',
-      'chn-grn-alandur',
-      'chn-blu-meenambakkam',
-      'chn-blu-airport',
-    ],
+    "id": "che-blue",
+    "name": "Blue Line",
+    "hindiName": "ब्लू लाइन (लाइन 1)",
+    "code": "L1",
+    "color": "#0284C7",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "che-l1-wimco-nagar-depot",
+      "che-l1-wimco-nagar",
+      "che-l1-thiruvottriyur",
+      "che-l1-thiruvottriyur-theradi",
+      "che-l1-kaladipet",
+      "che-l1-tollgate",
+      "che-l1-new-washermanpet",
+      "che-l1-tondiarpet",
+      "che-l1-sir-theagaraya-college",
+      "che-l1-washermanpet",
+      "che-l1-mannadi",
+      "che-l1-high-court",
+      "che-l1-mgr-central-chennai-central",
+      "che-l1-government-estate",
+      "che-l1-lic",
+      "che-l1-thousand-lights",
+      "che-l1-ag-dms",
+      "che-l1-teynampet",
+      "che-l1-nandanam",
+      "che-l1-saidapet",
+      "che-l1-little-mount",
+      "che-l1-guindy",
+      "che-l1-arignar-anna-alandur",
+      "che-l1-nanganallur-road",
+      "che-l1-meenambakkam",
+      "che-l1-chennai-international-airport"
+    ]
   },
   {
-    id: 'chn-green',
-    name: 'Green Line (Central - St. Thomas Mount)',
-    hindiName: 'ग्रीन लाइन (सेंट्रल - सेंट थॉमस माउंट)',
-    code: 'L2',
-    color: '#16A34A',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'chn-blu-central',
-      'chn-grn-egmore',
-      'chn-grn-nehru-park',
-      'chn-grn-shenoy-nagar',
-      'chn-grn-anna-nagar-e',
-      'chn-grn-anna-nagar-tower',
-      'chn-grn-koyambedu',
-      'chn-grn-vadapalani',
-      'chn-grn-ashok-nagar',
-      'chn-grn-alandur',
-      'chn-grn-st-thomas-mount',
-    ],
-  },
+    "id": "che-green",
+    "name": "Green Line",
+    "hindiName": "ग्रीन लाइन (लाइन 2)",
+    "code": "L2",
+    "color": "#22C55E",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "che-l1-mgr-central-chennai-central",
+      "che-l2-egmore",
+      "che-l2-nehru-park",
+      "che-l2-kilpauk-medical-college",
+      "che-l2-pachaiyappa-college",
+      "che-l2-shenoy-nagar",
+      "che-l2-anna-nagar-east",
+      "che-l2-anna-nagar-tower",
+      "che-l2-thirumangalam",
+      "che-l2-koyambedu",
+      "che-l2-cmbt",
+      "che-l2-arumbakkam",
+      "che-l2-vadapalani",
+      "che-l2-ashok-nagar",
+      "che-l2-ekkattuthangal",
+      "che-l1-arignar-anna-alandur",
+      "che-l2-st-thomas-mount"
+    ]
+  }
 ];

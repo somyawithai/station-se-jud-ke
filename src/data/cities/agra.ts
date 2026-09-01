@@ -2,31 +2,103 @@ import { RawStationGeoData } from '../rawStationGeoData';
 import { MetroLine } from '../../types';
 
 export const AGRA_RAW_STATIONS: RawStationGeoData[] = [
-  // Yellow Line (Taj East Gate to Mankameshwar Mandir / Jama Masjid)
-  { id: 'agr-yel-taj-east-gate', name: 'Taj East Gate', hindiName: 'ताज ईस्ट गेट', cityId: 'agra', lineIds: ['agr-yellow'], latitude: 27.1685, longitude: 78.0585, isTerminal: true, zone: 'Taj Heritage Zone', landmark: 'UNESCO World Heritage Taj Mahal East Entry & Shilpgram', elevation: 'elevated' },
-  { id: 'agr-yel-captain-shubham', name: 'Captain Shubham Gupta (Fatehabad Road)', hindiName: 'कैप्टन शुभम गुप्ता', cityId: 'agra', lineIds: ['agr-yellow'], latitude: 27.1612, longitude: 78.0465, zone: 'Tourist Hotel Corridor', landmark: 'Fatehabad Road Luxury Hotel Belt', elevation: 'elevated' },
-  { id: 'agr-yel-taj-mahal', name: 'Taj Mahal (Purani Mandi)', hindiName: 'ताज महल मेट्रो स्टेशन', cityId: 'agra', lineIds: ['agr-yellow'], latitude: 27.1698, longitude: 78.0385, zone: 'Taj West Corridor', landmark: 'Taj Mahal West Gate & Purani Mandi Crossing', elevation: 'elevated' },
-  { id: 'agr-yel-agra-fort', name: 'Agra Fort', hindiName: 'आगरा फोर्ट', cityId: 'agra', lineIds: ['agr-yellow'], latitude: 27.1798, longitude: 78.0212, isInterchange: true, interchangeLines: ['Yellow Line', 'Agra Fort Railway Station (AF)'], zone: 'UNESCO Mughal Fortress', landmark: 'UNESCO World Heritage Agra Fort & Diwan-i-Aam', elevation: 'underground' },
-  { id: 'agr-yel-mankameshwar', name: 'Mankameshwar Mandir (Jama Masjid)', hindiName: 'मनकामेश्वर मंदिर (जामा मस्जिद)', cityId: 'agra', lineIds: ['agr-yellow'], latitude: 27.1852, longitude: 78.0165, isTerminal: true, zone: 'Historic Heritage Core', landmark: 'Ancient Mankameshwar Shiva Temple & Historic Jama Masjid', elevation: 'underground' },
-  { id: 'agr-yel-dr-bhimrao', name: 'Dr. Bhimrao Ambedkar University', hindiName: 'डॉ. भीमराव अंबेडकर विश्वविद्यालय', cityId: 'agra', lineIds: ['agr-yellow'], latitude: 27.1985, longitude: 78.0085, zone: 'Education Zone', landmark: 'Paliwal Park & University Campus', elevation: 'underground' },
+  {
+    "id": "agr-l1-taj-east-gate",
+    "name": "Taj East Gate",
+    "cityId": "agra",
+    "lineIds": [
+      "agr-yellow"
+    ],
+    "latitude": 27.13427,
+    "longitude": 77.96567,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "agr-l1-shahid-captain-shubham-gupta-basai",
+    "name": "Shahid Captain Shubham Gupta (Basai)",
+    "cityId": "agra",
+    "lineIds": [
+      "agr-yellow"
+    ],
+    "latitude": 27.15124,
+    "longitude": 77.98264,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "agr-l1-fatehabad-road",
+    "name": "Fatehabad Road",
+    "cityId": "agra",
+    "lineIds": [
+      "agr-yellow"
+    ],
+    "latitude": 27.16821,
+    "longitude": 77.99961,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "agr-l1-taj-mahal",
+    "name": "Taj Mahal",
+    "cityId": "agra",
+    "lineIds": [
+      "agr-yellow"
+    ],
+    "latitude": 27.18519,
+    "longitude": 78.01659,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "agr-l1-agra-fort",
+    "name": "Agra Fort",
+    "cityId": "agra",
+    "lineIds": [
+      "agr-yellow"
+    ],
+    "latitude": 27.20216,
+    "longitude": 78.03356,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "agr-l1-mankameshwar",
+    "name": "Mankameshwar",
+    "cityId": "agra",
+    "lineIds": [
+      "agr-yellow"
+    ],
+    "latitude": 27.21913,
+    "longitude": 78.05053,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  }
 ];
 
 export const AGRA_LINES_CONFIG: MetroLine[] = [
   {
-    id: 'agr-yellow',
-    name: 'Yellow Line Priority Corridor (Taj East Gate - Mankameshwar)',
-    hindiName: 'येलो लाइन (ताज ईस्ट गेट - मनकामेश्वर मंदिर)',
-    code: 'L1',
-    color: '#EAB308',
-    textColor: '#1C1917',
-    strokeWidth: 6,
-    stationIds: [
-      'agr-yel-taj-east-gate',
-      'agr-yel-captain-shubham',
-      'agr-yel-taj-mahal',
-      'agr-yel-agra-fort',
-      'agr-yel-mankameshwar',
-      'agr-yel-dr-bhimrao',
-    ],
-  },
+    "id": "agr-yellow",
+    "name": "Yellow Line",
+    "hindiName": "येलो लाइन",
+    "code": "L1",
+    "color": "#EAB308",
+    "textColor": "#1C1917",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "agr-l1-taj-east-gate",
+      "agr-l1-shahid-captain-shubham-gupta-basai",
+      "agr-l1-fatehabad-road",
+      "agr-l1-taj-mahal",
+      "agr-l1-agra-fort",
+      "agr-l1-mankameshwar"
+    ]
+  }
 ];

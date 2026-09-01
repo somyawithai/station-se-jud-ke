@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { CITIES_METRO_DATA } from './data/metroData';
 import { MetroStation, UserStationSelection, NationalAnalytics } from './types';
 import { StationStorageService } from './services/stationStorage';
@@ -8,6 +9,7 @@ import { MetroMapCanvas } from './components/MetroMapCanvas';
 import { StationConfirmationModal } from './components/StationConfirmationModal';
 import { NationalAnalyticsModal } from './components/NationalAnalyticsModal';
 import { MyStationsDrawer } from './components/MyStationsDrawer';
+import { CinematicIntro } from './components/CinematicIntro';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function App() {
@@ -18,6 +20,15 @@ export default function App() {
   const [isMyStationsOpen, setIsMyStationsOpen] = useState(false);
   const [analyticsData, setAnalyticsData] = useState<NationalAnalytics | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Cinematic Intro state: plays on first visit/session or when replayed
+  const [showIntro, setShowIntro] = useState<boolean>(() => {
+    try {
+      return !localStorage.getItem('stationSeJudKeIntroSeen');
+    } catch {
+      return false;
+    }
+  });
 
   // Show quick toast helper
   const showToast = (msg: string) => {
@@ -113,6 +124,10 @@ export default function App() {
         onSelectCity={handleSelectCity}
         onOpenAnalytics={() => setIsAnalyticsOpen(true)}
         onOpenMyStations={() => setIsMyStationsOpen(true)}
+        onReplayIntro={() => {
+          setSelectedCityId(null);
+          setShowIntro(true);
+        }}
       />
 
       {/* Main Map Viewport Area: Fills 100% of remaining screen */}
@@ -139,6 +154,21 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Cinematic Space-to-India Intro Overlay (Smooth Fade-Out to Interactive Map) */}
+      <AnimatePresence>
+        {showIntro && (
+          <motion.div
+            key="cinematic-intro-overlay"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
+            className="fixed inset-0 z-50 pointer-events-auto"
+          >
+            <CinematicIntro onComplete={() => setShowIntro(false)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Confirmation Modal / Bottom Sheet */}
       {currentCity && (

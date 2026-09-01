@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   CITIES_METRO_DATA,
@@ -24,7 +24,8 @@ import {
   CheckCircle2,
   ArrowRight,
   X,
-  Navigation,
+  Compass,
+  Zap,
 } from 'lucide-react';
 
 interface IndiaLandingMapProps {
@@ -34,9 +35,6 @@ interface IndiaLandingMapProps {
   onOpenMyStations: () => void;
 }
 
-type ViewLevel = 1 | 2 | 3; // 1: India View, 2: Regional View, 3: City View
-type RegionFilter = 'all' | 'north' | 'west' | 'south' | 'central_east';
-
 export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   onSelectCity,
   userSelections,
@@ -44,7 +42,6 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   onOpenMyStations,
 }) => {
   const [activeHubHover, setActiveHubHover] = useState<NationalMetroSummary | null>(null);
-  const [activeRegion, setActiveRegion] = useState<RegionFilter>('all');
   const [citySearchQuery, setCitySearchQuery] = useState('');
   const [isCitySearchFocused, setIsCitySearchFocused] = useState(false);
   const [showNetworkFilaments, setShowNetworkFilaments] = useState(true);
@@ -59,10 +56,6 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   // Pinch-to-zoom and touch support
   const touchStartDistRef = useRef<number | null>(null);
   const touchStartPanRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const touchMoveDetectedRef = useRef(false);
-
-  // Determine current effective zoom level (Level 1: India, Level 2: Regional)
-  const currentZoomLevel: ViewLevel = mapScale >= 1.45 || activeRegion !== 'all' ? 2 : 1;
 
   // Geographic SVG outline paths generated via D3 projection from GeoJSON
   const indiaSvgBoundaryPaths = useMemo(() => getIndiaBoundarySvgPaths(), []);
@@ -72,57 +65,63 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   const hubMap = useMemo(() => new Map(NATIONAL_METRO_HUBS.map((h) => [h.id, h])), []);
 
   // Simplified subtle national network connection filaments
-  const simplifiedCorridors = useMemo(() => {
+  const nationalCorridors = useMemo(() => {
     const connections = [
-      { from: 'delhi', to: 'noida' },
-      { from: 'delhi', to: 'gurugram' },
-      { from: 'delhi', to: 'meerut' },
-      { from: 'delhi', to: 'agra' },
-      { from: 'delhi', to: 'jaipur' },
-      { from: 'delhi', to: 'kanpur' },
-      { from: 'delhi', to: 'lucknow' },
-      { from: 'delhi', to: 'bhopal' },
-      { from: 'delhi', to: 'ahmedabad' },
-      { from: 'delhi', to: 'mumbai' },
-      { from: 'delhi', to: 'hyderabad' },
-      { from: 'delhi', to: 'kolkata' },
-      { from: 'agra', to: 'kanpur' },
-      { from: 'kanpur', to: 'lucknow' },
-      { from: 'jaipur', to: 'ahmedabad' },
-      { from: 'ahmedabad', to: 'indore' },
-      { from: 'ahmedabad', to: 'mumbai' },
-      { from: 'mumbai', to: 'navi-mumbai' },
-      { from: 'mumbai', to: 'pune' },
-      { from: 'mumbai', to: 'nagpur' },
-      { from: 'bhopal', to: 'indore' },
-      { from: 'bhopal', to: 'nagpur' },
-      { from: 'pune', to: 'hyderabad' },
-      { from: 'nagpur', to: 'hyderabad' },
-      { from: 'hyderabad', to: 'bengaluru' },
-      { from: 'hyderabad', to: 'chennai' },
-      { from: 'bengaluru', to: 'chennai' },
-      { from: 'bengaluru', to: 'kochi' },
-      { from: 'chennai', to: 'kochi' },
-      { from: 'kolkata', to: 'chennai' },
+      { from: 'delhi', to: 'noida', speed: 3.2, delay: 0 },
+      { from: 'delhi', to: 'gurgaon', speed: 3.0, delay: 0.5 },
+      { from: 'delhi', to: 'meerut', speed: 3.4, delay: 1.0 },
+      { from: 'delhi', to: 'agra', speed: 4.2, delay: 0.2 },
+      { from: 'delhi', to: 'jaipur', speed: 4.5, delay: 0.8 },
+      { from: 'delhi', to: 'kanpur', speed: 4.8, delay: 1.4 },
+      { from: 'delhi', to: 'lucknow', speed: 5.0, delay: 0.6 },
+      { from: 'delhi', to: 'bhopal', speed: 5.4, delay: 1.2 },
+      { from: 'delhi', to: 'ahmedabad', speed: 5.8, delay: 1.8 },
+      { from: 'delhi', to: 'mumbai', speed: 6.2, delay: 0.4 },
+      { from: 'delhi', to: 'hyderabad', speed: 6.5, delay: 2.0 },
+      { from: 'delhi', to: 'kolkata', speed: 6.8, delay: 1.5 },
+      { from: 'agra', to: 'kanpur', speed: 3.6, delay: 0.3 },
+      { from: 'kanpur', to: 'lucknow', speed: 3.0, delay: 0.9 },
+      { from: 'lucknow', to: 'patna', speed: 4.6, delay: 1.1 },
+      { from: 'patna', to: 'kolkata', speed: 5.0, delay: 1.6 },
+      { from: 'jaipur', to: 'ahmedabad', speed: 4.8, delay: 1.1 },
+      { from: 'ahmedabad', to: 'indore', speed: 4.0, delay: 0.7 },
+      { from: 'ahmedabad', to: 'mumbai', speed: 4.6, delay: 1.3 },
+      { from: 'mumbai', to: 'navi-mumbai', speed: 2.8, delay: 0.1 },
+      { from: 'mumbai', to: 'pune', speed: 3.2, delay: 0.5 },
+      { from: 'mumbai', to: 'nagpur', speed: 5.2, delay: 1.7 },
+      { from: 'bhopal', to: 'indore', speed: 3.4, delay: 0.4 },
+      { from: 'bhopal', to: 'nagpur', speed: 4.2, delay: 1.0 },
+      { from: 'pune', to: 'hyderabad', speed: 4.8, delay: 1.6 },
+      { from: 'nagpur', to: 'hyderabad', speed: 4.4, delay: 0.8 },
+      { from: 'hyderabad', to: 'bengaluru', speed: 5.0, delay: 1.2 },
+      { from: 'hyderabad', to: 'chennai', speed: 5.2, delay: 0.3 },
+      { from: 'bengaluru', to: 'chennai', speed: 3.8, delay: 0.7 },
+      { from: 'bengaluru', to: 'kochi', speed: 4.4, delay: 1.5 },
+      { from: 'chennai', to: 'kochi', speed: 4.6, delay: 0.9 },
+      { from: 'kolkata', to: 'chennai', speed: 6.6, delay: 2.2 },
     ];
 
     return connections
-      .map(({ from, to }) => {
+      .map(({ from, to, speed, delay }) => {
         const h1 = hubMap.get(from);
         const h2 = hubMap.get(to);
         if (!h1 || !h2) return null;
 
-        const midX = (h1.x + h2.x) / 2 + (h2.y - h1.y) * 0.03;
-        const midY = (h1.y + h2.y) / 2 - (h2.x - h1.x) * 0.03;
+        const midX = (h1.x + h2.x) / 2 + (h2.y - h1.y) * 0.025;
+        const midY = (h1.y + h2.y) / 2 - (h2.x - h1.x) * 0.025;
         return {
           id: `${from}-${to}`,
+          from,
+          to,
+          speed,
+          delay,
           d: `M ${h1.x} ${h1.y} Q ${midX} ${midY} ${h2.x} ${h2.y}`,
         };
       })
       .filter((c): c is NonNullable<typeof c> => Boolean(c));
   }, [hubMap]);
 
-  // Compute global non-overlapping city label placements with intelligent radial collision avoidance
+  // Compute global non-overlapping city label placements
   const userSelectedCityIds = useMemo(() => userSelections.map((s) => s.cityId), [userSelections]);
   const cityLabelPlacements = useMemo(() => {
     return computeGlobalCityLabelPlacements(
@@ -159,32 +158,10 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   const handleResetMap = () => {
     setMapScale(1);
     setMapPan({ x: 0, y: 0 });
-    setActiveRegion('all');
     setActiveHubHover(null);
   };
 
-  // Region View Focus Presets (Level 2 Regional Views)
-  const handleSelectRegion = (region: RegionFilter) => {
-    setActiveRegion(region);
-    if (region === 'all') {
-      setMapScale(1);
-      setMapPan({ x: 0, y: 0 });
-    } else if (region === 'north') {
-      setMapScale(1.85);
-      setMapPan({ x: 60, y: 160 });
-    } else if (region === 'west') {
-      setMapScale(1.85);
-      setMapPan({ x: 260, y: -40 });
-    } else if (region === 'south') {
-      setMapScale(1.95);
-      setMapPan({ x: 80, y: -300 });
-    } else if (region === 'central_east') {
-      setMapScale(1.75);
-      setMapPan({ x: -100, y: 0 });
-    }
-  };
-
-  // Mouse Handlers
+  // Mouse Handlers for Pan
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return;
     setIsDragging(true);
@@ -206,12 +183,11 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     const factor = -e.deltaY * 0.001;
-    setMapScale((prev) => Math.min(Math.max(prev + factor, 0.7), 3.5));
+    setMapScale((prev) => Math.min(Math.max(prev + factor, 0.75), 3.5));
   };
 
   // Touch Handlers for Mobile (Pan & Pinch)
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchMoveDetectedRef.current = false;
     if (e.touches.length === 1) {
       setIsDragging(true);
       setDragStart({
@@ -229,7 +205,6 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    touchMoveDetectedRef.current = true;
     if (e.touches.length === 1 && isDragging) {
       setMapPan({
         x: e.touches[0].clientX - dragStart.x,
@@ -240,7 +215,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
       const touch2 = e.touches[1];
       const currentDist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
       const scaleMultiplier = currentDist / touchStartDistRef.current;
-      setMapScale((prev) => Math.min(Math.max(prev * scaleMultiplier, 0.7), 3.5));
+      setMapScale((prev) => Math.min(Math.max(prev * scaleMultiplier, 0.75), 3.5));
       touchStartDistRef.current = currentDist;
     }
   };
@@ -253,164 +228,127 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   return (
     <div
       id="india-landing-view"
-      className="relative w-full h-full flex flex-col bg-[#050811] bg-cyber-grid overflow-hidden text-slate-100 select-none"
+      className="relative w-full h-full flex flex-col bg-[#060813] overflow-hidden text-slate-100 select-none"
     >
-      {/* 1. TOP OVERLAY: Mobile & Desktop Hero + Search */}
-      <div className="absolute top-2.5 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 z-30 pointer-events-none flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2">
-        {/* COMPACT HERO BADGE */}
-        <div className="pointer-events-auto bg-[#070B14]/90 backdrop-blur-xl border border-slate-800/90 rounded-2xl px-3 py-1.5 sm:px-4 sm:py-2.5 shadow-2xl flex items-center justify-between md:block shrink-0">
-          <div>
-            <div className="flex items-center gap-1.5">
-              <h1 className="text-xs sm:text-base font-extrabold tracking-wider font-heading text-white">
-                STATION SE JUD KE
-              </h1>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-pulse"></span>
-              <span className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-cyan-400">
-                {currentZoomLevel === 1 ? 'LEVEL 1 : INDIA VIEW' : 'LEVEL 2 : REGIONAL VIEW'}
-              </span>
-            </div>
-            <p className="text-[10px] sm:text-xs font-medium text-slate-400 tracking-wide">
-              Find your nearest metro station.
-            </p>
+      {/* Subtle Atmospheric Vignette & Radial Depth */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_40%,rgba(14,24,46,0.5)_0%,rgba(6,8,19,0.95)_75%)]" />
+
+      {/* ========================================================= */}
+      {/* 1. EDITORIAL HERO: MINIMAL, SPACIOUS, ZERO RECTANGULAR CARD */}
+      {/* ========================================================= */}
+      <div className="absolute top-4 sm:top-7 left-4 sm:left-8 z-30 pointer-events-none max-w-xl">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="space-y-1.5"
+        >
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse shadow-[0_0_8px_#FF6B00]" />
+            <span className="text-[10px] sm:text-xs font-mono tracking-[0.28em] text-[#FF6B00] uppercase font-bold">
+              India In Motion
+            </span>
           </div>
 
-          {/* Mobile indicator pill */}
-          <span className="inline-block sm:hidden text-[9px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-cyan-400 font-bold">
-            20 CITIES
-          </span>
-        </div>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[#FAF7F2] font-heading leading-tight drop-shadow-md">
+            STATION SE JUD KE
+          </h1>
 
-        {/* COMPACT MOBILE & DESKTOP SEARCH BAR */}
-        <div className="pointer-events-auto flex items-center gap-2 w-full md:w-auto md:max-w-sm">
-          <div className="relative flex-1">
-            <div className="flex items-center bg-[#0B1120]/95 backdrop-blur-xl border border-slate-700/80 rounded-2xl px-3 py-2 sm:py-2 shadow-2xl focus-within:border-cyan-400 focus-within:ring-1 focus-within:ring-cyan-400/50 transition">
-              <Search className="w-3.5 h-3.5 text-cyan-400 shrink-0 mr-2" />
-              <input
-                id="floating-city-search-input"
-                type="text"
-                value={citySearchQuery}
-                onFocus={() => setIsCitySearchFocused(true)}
-                onChange={(e) => {
-                  setCitySearchQuery(e.target.value);
-                  setIsCitySearchFocused(true);
-                }}
-                placeholder="Search metro city... (Delhi, Mumbai, Meerut)"
-                className="w-full text-xs text-white placeholder:text-slate-500 bg-transparent outline-none font-medium"
-              />
-              {citySearchQuery && (
-                <button
-                  onClick={() => setCitySearchQuery('')}
-                  className="p-1 hover:text-white text-slate-400"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
+          <p className="text-xs sm:text-sm md:text-base font-normal text-[#94A3B8] tracking-wide max-w-md">
+            Find your nearest metro station.
+          </p>
+        </motion.div>
+      </div>
 
-            {/* Quick Floating Search Dropdown */}
-            <AnimatePresence>
-              {isCitySearchFocused && citySearchQuery.trim() && (
-                <motion.div
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  className="absolute left-0 right-0 top-full mt-1.5 bg-[#0B1120] rounded-2xl shadow-2xl border border-slate-700 max-h-64 overflow-y-auto z-40 p-1 backdrop-blur-2xl"
-                >
-                  {searchResults.length > 0 ? (
-                    searchResults.map((city) => {
-                      const isSelected = userSelections.some((s) => s.cityId === city.id);
-                      return (
-                        <button
-                          key={city.id}
-                          onClick={() => {
-                            setIsCitySearchFocused(false);
-                            setCitySearchQuery('');
-                            onSelectCity(city.id);
-                          }}
-                          className="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800/80 transition flex items-center justify-between group"
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-[#00F0FF] group-hover:scale-125 transition"></span>
-                            <div>
-                              <div className="text-xs font-bold text-white group-hover:text-cyan-400 flex items-center gap-1.5">
-                                <span>{city.name}</span>
-                                <span className="text-[10px] text-slate-400 font-normal">
-                                  ({city.state})
-                                </span>
-                              </div>
-                              <div className="text-[10px] text-slate-400 font-mono">
-                                {city.stations.length} stations • {city.lines.length} lines
-                              </div>
+      {/* ========================================================= */}
+      {/* 2. REFINED FLOATING SEARCH: MINIMALIST, NON-OBTRUSIVE      */}
+      {/* ========================================================= */}
+      <div className="absolute top-4 sm:top-7 right-4 sm:right-8 z-30 pointer-events-auto w-auto max-w-[280px] sm:max-w-xs md:max-w-sm">
+        <div className="relative">
+          <div className="flex items-center bg-[#0B1021]/80 backdrop-blur-2xl border border-slate-800 hover:border-slate-700 rounded-full px-3.5 py-2 shadow-2xl focus-within:border-[#FF6B00]/70 focus-within:ring-1 focus-within:ring-[#FF6B00]/30 transition-all duration-200">
+            <Search className="w-3.5 h-3.5 text-[#FF6B00] shrink-0 mr-2" />
+            <input
+              id="floating-city-search-input"
+              type="text"
+              value={citySearchQuery}
+              onFocus={() => setIsCitySearchFocused(true)}
+              onChange={(e) => {
+                setCitySearchQuery(e.target.value);
+                setIsCitySearchFocused(true);
+              }}
+              placeholder="Search 21 metro cities..."
+              className="w-full text-xs text-white placeholder:text-slate-500 bg-transparent outline-none font-medium"
+            />
+            {citySearchQuery && (
+              <button
+                onClick={() => setCitySearchQuery('')}
+                className="p-0.5 hover:text-white text-slate-400"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Quick Floating Search Dropdown */}
+          <AnimatePresence>
+            {isCitySearchFocused && citySearchQuery.trim() && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-[#0B1021]/95 rounded-2xl shadow-2xl border border-slate-800 max-h-64 overflow-y-auto z-40 p-1.5 backdrop-blur-2xl"
+              >
+                {searchResults.length > 0 ? (
+                  searchResults.map((city) => {
+                    const isSelected = userSelections.some((s) => s.cityId === city.id);
+                    return (
+                      <button
+                        key={city.id}
+                        onClick={() => {
+                          setIsCitySearchFocused(false);
+                          setCitySearchQuery('');
+                          onSelectCity(city.id);
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800/80 transition flex items-center justify-between group"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[#FF6B00] group-hover:scale-125 transition"></span>
+                          <div>
+                            <div className="text-xs font-bold text-white group-hover:text-[#FF6B00] flex items-center gap-1.5">
+                              <span>{city.name}</span>
+                              <span className="text-[10px] text-slate-400 font-normal">
+                                ({city.state})
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-slate-400 font-mono">
+                              {city.stations.length} stations • {city.lines.length} lines
                             </div>
                           </div>
-                          {isSelected ? (
-                            <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-                              <CheckCircle2 className="w-3 h-3" /> Connected
-                            </span>
-                          ) : (
-                            <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 transition" />
-                          )}
-                        </button>
-                      );
-                    })
-                  ) : (
-                    <div className="p-3 text-center text-xs text-slate-400 font-mono">
-                      No matching operational metro city found
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                        </div>
+                        {isSelected ? (
+                          <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3" /> Connected
+                          </span>
+                        ) : (
+                          <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-[#FF6B00] transition" />
+                        )}
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div className="p-3 text-center text-xs text-slate-400 font-mono">
+                    No matching operational metro city found
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
-      {/* 2. REGIONAL PRESET PILLS (Visible on Desktop / Compact on Mobile) */}
-      <div className="hidden sm:flex absolute top-20 left-4 z-20 items-center gap-1 bg-[#070B14]/85 backdrop-blur-xl p-1 rounded-2xl border border-slate-800/90 shadow-xl">
-        <span className="text-[10px] font-mono text-slate-400 px-2 font-semibold">VIEW:</span>
-        <button
-          onClick={() => handleSelectRegion('all')}
-          className={`px-2.5 py-1 rounded-xl text-[11px] font-mono font-medium transition ${
-            activeRegion === 'all'
-              ? 'bg-cyan-950 text-cyan-300 border border-cyan-700/80'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          All India (20)
-        </button>
-        <button
-          onClick={() => handleSelectRegion('north')}
-          className={`px-2.5 py-1 rounded-xl text-[11px] font-mono font-medium transition ${
-            activeRegion === 'north'
-              ? 'bg-cyan-950 text-cyan-300 border border-cyan-700/80'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          North Hubs
-        </button>
-        <button
-          onClick={() => handleSelectRegion('west')}
-          className={`px-2.5 py-1 rounded-xl text-[11px] font-mono font-medium transition ${
-            activeRegion === 'west'
-              ? 'bg-cyan-950 text-cyan-300 border border-cyan-700/80'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          West & Central
-        </button>
-        <button
-          onClick={() => handleSelectRegion('south')}
-          className={`px-2.5 py-1 rounded-xl text-[11px] font-mono font-medium transition ${
-            activeRegion === 'south'
-              ? 'bg-cyan-950 text-cyan-300 border border-cyan-700/80'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          South Hubs
-        </button>
-      </div>
-
-      {/* 3. MAIN FULL-VIEWPORT INTERACTIVE VECTOR MAP CANVAS */}
+      {/* ========================================================= */}
+      {/* 3. HERO INTERACTIVE VECTOR MAP: ACCURATE INDIA DOMINATES   */}
+      {/* ========================================================= */}
       <div
         ref={mapContainerRef}
         onMouseDown={handleMouseDown}
@@ -432,112 +370,114 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
             y: mapPan.y,
           }}
           transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-          className="w-full h-full flex items-center justify-center pt-16 sm:pt-0"
+          className="w-full h-full flex items-center justify-center pt-16 sm:pt-4"
         >
           <svg
             viewBox={`0 0 ${INDIA_MAP_WIDTH} ${INDIA_MAP_HEIGHT}`}
-            className="w-full h-full max-w-[96vh] max-h-[96vh] transition-all duration-150 drop-shadow-[0_0_35px_rgba(0,240,255,0.06)] overflow-visible"
+            className="w-full h-full max-w-[95vh] max-h-[95vh] transition-all duration-150 overflow-visible"
             preserveAspectRatio="xMidYMid meet"
           >
             <defs>
-              {/* Refined Glowing Filters */}
-              <filter id="cityGlowCyan" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3" result="blur" />
+              {/* Refined Subtle Glow Filter */}
+              <filter id="heroWarmGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
 
-              <filter id="cityGlowSaffron" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-
-              <radialGradient id="cityHubHalo" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#00F0FF" stopOpacity="0.8" />
-                <stop offset="50%" stopColor="#0284C7" stopOpacity="0.25" />
-                <stop offset="100%" stopColor="#050811" stopOpacity="0" />
+              <radialGradient id="cityNodeHalo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#FF6B00" stopOpacity="0.75" />
+                <stop offset="60%" stopColor="#FF6B00" stopOpacity="0.15" />
+                <stop offset="100%" stopColor="#060813" stopOpacity="0" />
               </radialGradient>
-
-              <pattern id="cyberMapGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path
-                  d="M 60 0 L 0 0 0 60"
-                  fill="none"
-                  stroke="#1E293B"
-                  strokeWidth="0.5"
-                  strokeDasharray="2 6"
-                  opacity="0.35"
-                />
-              </pattern>
             </defs>
-
-            <rect width={INDIA_MAP_WIDTH} height={INDIA_MAP_HEIGHT} fill="url(#cyberMapGrid)" />
 
             {/* LAYER 1: ACCURATE INDIA GEOGRAPHIC BOUNDARY */}
             <g id="layer-1-india-geographic-boundary">
-              {/* Internal State Boundaries */}
-              <g id="sub-layer-state-boundaries" opacity="0.4">
+              {/* Internal State Boundaries (Subtle & Restrained) */}
+              <g id="sub-layer-state-boundaries" opacity="0.35">
                 {indiaStateBoundaryPaths.map((state, sIdx) => (
                   <path
                     key={`state-${state.name}-${sIdx}`}
                     d={state.path}
                     fill="none"
-                    stroke="#162238"
-                    strokeWidth="0.75"
-                    strokeDasharray="2 3"
+                    stroke="#18233C"
+                    strokeWidth="0.7"
                   />
                 ))}
               </g>
 
-              {/* Official Country Boundary MultiPolygon */}
+              {/* Official Country Boundary MultiPolygon (Warm Ivory / Soft Off-White Contour) */}
               <g id="sub-layer-country-boundary">
                 {indiaSvgBoundaryPaths.map((pathD, idx) => (
                   <path
                     key={`india-path-${idx}`}
                     d={pathD}
-                    fill="#090F1C"
-                    stroke="#1E2E4A"
-                    strokeWidth="1.6"
+                    fill="#0A1020"
+                    stroke="#EAE5DB"
+                    strokeWidth="1.65"
                     strokeLinejoin="round"
                     strokeLinecap="round"
-                    className="transition-colors duration-300 hover:stroke-cyan-500/40"
+                    strokeOpacity="0.85"
+                    filter="url(#heroWarmGlow)"
+                    className="transition-colors duration-300"
                   />
                 ))}
               </g>
 
-              {/* Island Territory Identifiers */}
-              <g id="sub-layer-island-annotations" className="text-[8px] font-mono fill-slate-600 select-none">
-                <text x="615" y="745" textAnchor="middle" fill="#334155" fontSize="7.5" letterSpacing="0.08em">
+              {/* Island Territory Identifiers (Quiet & Editorial) */}
+              <g id="sub-layer-island-annotations" className="text-[7.5px] font-mono fill-slate-600 select-none">
+                <text x="615" y="745" textAnchor="middle" fill="#3B4861" fontSize="7.5" letterSpacing="0.1em">
                   ANDAMAN & NICOBAR
                 </text>
-                <text x="125" y="770" textAnchor="middle" fill="#334155" fontSize="7.5" letterSpacing="0.08em">
+                <text x="125" y="770" textAnchor="middle" fill="#3B4861" fontSize="7.5" letterSpacing="0.1em">
                   LAKSHADWEEP
                 </text>
               </g>
             </g>
 
-            {/* LAYER 2: SIMPLIFIED SUBTLE METRO NETWORK CONNECTIONS */}
+            {/* LAYER 2: "INDIA IN MOTION" SUBTLE TRANSIT CORRIDORS & PARTICLES */}
             {showNetworkFilaments && (
-              <g id="layer-2-simplified-network-connections" opacity="0.45">
-                {simplifiedCorridors.map((c) => (
+              <g id="layer-2-transit-corridors">
+                {/* Base connection lines */}
+                {nationalCorridors.map((c) => (
                   <path
-                    key={`corridor-${c.id}`}
+                    key={`corridor-line-${c.id}`}
                     d={c.d}
                     fill="none"
                     stroke="#0284C7"
-                    strokeWidth="0.9"
-                    strokeDasharray="3 5"
+                    strokeWidth="0.85"
+                    strokeOpacity="0.28"
+                    strokeDasharray="3 4"
                     strokeLinecap="round"
                   />
+                ))}
+
+                {/* Animated light pulses traveling along transit arteries */}
+                {nationalCorridors.map((c) => (
+                  <circle
+                    key={`pulse-${c.id}`}
+                    r="1.75"
+                    fill="#FF6B00"
+                    opacity="0.85"
+                    className="pointer-events-none"
+                  >
+                    <animateMotion
+                      dur={`${c.speed}s`}
+                      repeatCount="indefinite"
+                      path={c.d}
+                      keyPoints="0;1"
+                      keyTimes="0;1"
+                      begin={`${c.delay}s`}
+                    />
+                  </circle>
                 ))}
               </g>
             )}
 
-            {/* LAYER 3: DYNAMIC LEADER LINES FOR DENSE CALLOUTS */}
+            {/* LAYER 3: CLEAN HAIR-LINE RADIAL LEADER LINES FOR DENSE CALLOUTS */}
             <g id="layer-3-radial-leader-lines">
               {NATIONAL_METRO_HUBS.map((hub) => {
                 const placement = cityLabelPlacements.get(hub.id);
@@ -549,34 +489,28 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                 const strokeColor = isSelectedByUser
                   ? '#10B981'
                   : isHovered
-                  ? '#00F0FF'
-                  : '#0284C7';
+                  ? '#FF6B00'
+                  : '#38BDF8';
 
                 return (
                   <g
                     key={`leader-line-${hub.id}`}
                     id={`leader-line-${hub.id}`}
                     className="pointer-events-none transition-all duration-200"
-                    opacity={isHovered ? 1 : 0.75}
+                    opacity={isHovered ? 1 : 0.55}
                   >
                     <path
                       d={placement.leaderPath}
                       fill="none"
                       stroke={strokeColor}
-                      strokeWidth={isHovered ? 1.4 : 0.9}
-                      strokeDasharray={isHovered ? 'none' : '2 2'}
+                      strokeWidth={isHovered ? 1.2 : 0.75}
+                      strokeDasharray={isHovered ? 'none' : '1.5 2'}
                       strokeLinecap="round"
                     />
                     <circle
                       cx={placement.nodeX}
                       cy={placement.nodeY}
-                      r={isHovered ? 2.5 : 1.5}
-                      fill={strokeColor}
-                    />
-                    <circle
-                      cx={placement.attachX}
-                      cy={placement.attachY}
-                      r={isHovered ? 2 : 1.2}
+                      r={isHovered ? 2.2 : 1.4}
                       fill={strokeColor}
                     />
                   </g>
@@ -584,7 +518,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
               })}
             </g>
 
-            {/* LAYER 4: EXACT GEOGRAPHIC GLOWING CITY NODES + ≥44px TOUCH HITBOX */}
+            {/* LAYER 4: EXACT GEOGRAPHIC NODES (● Node with ≥44px Touch Target) */}
             <g id="layer-4-metro-city-nodes">
               {NATIONAL_METRO_HUBS.map((hub) => {
                 const isSelectedByUser = userSelections.some((s) => s.cityId === hub.id);
@@ -602,7 +536,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                     onMouseEnter={() => setActiveHubHover(hub)}
                     onMouseLeave={() => setActiveHubHover(null)}
                   >
-                    {/* Minimum 44px × 44px (radius 22px) transparent touch target for mobile */}
+                    {/* Minimum 44px × 44px (radius 22px) touch hitbox */}
                     <circle
                       cx={hub.x}
                       cy={hub.y}
@@ -611,12 +545,12 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                       className="cursor-pointer"
                     />
 
-                    {/* Subtle Pulsing Halo */}
+                    {/* Subtle Pulsing Halo on Hover */}
                     <circle
                       cx={hub.x}
                       cy={hub.y}
-                      r={isHovered ? 16 : 10}
-                      fill="url(#cityHubHalo)"
+                      r={isHovered ? 14 : 7}
+                      fill="url(#cityNodeHalo)"
                       className="transition-all duration-300 pointer-events-none"
                     />
 
@@ -624,20 +558,19 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                     <circle
                       cx={hub.x}
                       cy={hub.y}
-                      r={isHovered ? 5.5 : 4}
-                      fill="#070B14"
-                      stroke={isSelectedByUser ? '#10B981' : isHovered ? '#00F0FF' : '#FF6B00'}
+                      r={isHovered ? 5.5 : 3.8}
+                      fill="#060813"
+                      stroke={isSelectedByUser ? '#10B981' : isHovered ? '#FFFFFF' : '#FF6B00'}
                       strokeWidth="1.6"
                       className="transition-all duration-200 pointer-events-none"
-                      filter={isHovered ? 'url(#cityGlowCyan)' : undefined}
                     />
 
                     {/* Inner Core Point */}
                     <circle
                       cx={hub.x}
                       cy={hub.y}
-                      r={isHovered ? 2.5 : 1.8}
-                      fill={isSelectedByUser ? '#10B981' : '#FFFFFF'}
+                      r={isHovered ? 2.6 : 1.8}
+                      fill={isSelectedByUser ? '#10B981' : isHovered ? '#FF6B00' : '#FAF7F2'}
                       className="pointer-events-none"
                     />
                   </g>
@@ -645,7 +578,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
               })}
             </g>
 
-            {/* LAYER 5: CLEAN MINIMAL CITY TEXT LABELS (Short Names, Zero Clutter) */}
+            {/* LAYER 5: EDITORIAL CITY LABELS (● CityName, Clean Typography, Zero Clutter) */}
             <g id="layer-5-minimal-city-labels">
               {NATIONAL_METRO_HUBS.map((hub) => {
                 const placement = cityLabelPlacements.get(hub.id);
@@ -668,7 +601,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                     onMouseEnter={() => setActiveHubHover(hub)}
                     onMouseLeave={() => setActiveHubHover(null)}
                   >
-                    {/* Generous touch hitbox for label */}
+                    {/* Generous touch hitbox */}
                     <rect
                       x="-4"
                       y="-4"
@@ -678,38 +611,22 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                       className="cursor-pointer"
                     />
 
-                    {/* Minimalist Backdrop Pill */}
-                    <rect
-                      x="0"
-                      y="0"
-                      width={placement.labelWidth}
-                      height={placement.labelHeight}
-                      rx="4"
-                      fill="#070B14"
-                      fillOpacity={isHovered ? 0.95 : 0.88}
-                      stroke={isSelectedByUser ? '#10B981' : isHovered ? '#00F0FF' : '#1E293B'}
-                      strokeWidth={isHovered ? '1.2' : '0.75'}
-                      className="transition-all duration-150 group-hover:fill-[#0B132B]"
-                    />
-
-                    {/* Status Indicator Dot */}
-                    <circle
-                      cx="6"
-                      cy="9"
-                      r={isSelectedByUser ? 2.5 : 1.8}
-                      fill={isSelectedByUser ? '#10B981' : isHovered ? '#00F0FF' : '#FF6B00'}
-                    />
-
-                    {/* Clean Short City Name Text */}
+                    {/* Editorial Text with Crisp Stroke Halo for Flawless Readability */}
                     <text
-                      x="12"
-                      y="12.5"
-                      className={`text-[10px] font-bold font-mono tracking-tight transition-colors duration-150 ${
+                      x="0"
+                      y="13"
+                      style={{
+                        paintOrder: 'stroke fill',
+                        stroke: '#060813',
+                        strokeWidth: 3,
+                        strokeLinejoin: 'round',
+                      }}
+                      className={`text-[11px] font-semibold tracking-wide transition-colors duration-150 font-heading ${
                         isSelectedByUser
-                          ? 'fill-emerald-300'
+                          ? 'fill-emerald-400 font-bold'
                           : isHovered
-                          ? 'fill-cyan-300 font-extrabold'
-                          : 'fill-slate-200'
+                          ? 'fill-[#FF6B00] font-bold'
+                          : 'fill-[#FAF7F2]'
                       }`}
                     >
                       {shortName}
@@ -733,16 +650,16 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                     <circle
                       cx={svgX}
                       cy={svgY}
-                      r="9"
+                      r="10"
                       fill="none"
                       stroke="#10B981"
-                      strokeWidth="1.4"
+                      strokeWidth="1.5"
                       className="animate-ping origin-center opacity-75"
                     />
                     <circle
                       cx={svgX}
                       cy={svgY}
-                      r="12"
+                      r="14"
                       fill="none"
                       stroke="#10B981"
                       strokeWidth="0.8"
@@ -757,30 +674,32 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
           </svg>
         </motion.div>
 
-        {/* Hover / Tap Quick City Card */}
+        {/* Hover / Tap Quick City Modal Card */}
         <AnimatePresence>
           {activeHubHover && (
             <motion.div
-              initial={{ opacity: 0, y: 8, scale: 0.95 }}
+              initial={{ opacity: 0, y: 8, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 8, scale: 0.95 }}
-              className="absolute bottom-16 left-4 right-4 sm:left-auto sm:right-6 bg-[#070B14]/95 backdrop-blur-2xl text-white p-3.5 rounded-2xl shadow-2xl border border-cyan-500/40 z-30 sm:max-w-xs pointer-events-auto"
+              exit={{ opacity: 0, y: 8, scale: 0.96 }}
+              transition={{ duration: 0.15 }}
+              className="absolute bottom-16 sm:bottom-8 left-4 right-4 sm:left-auto sm:right-8 bg-[#0B1021]/95 backdrop-blur-2xl text-white p-4 rounded-2xl shadow-2xl border border-slate-800 z-30 sm:max-w-xs pointer-events-auto"
             >
-              <div className="flex items-center justify-between gap-2 mb-1">
-                <div className="flex items-center gap-1 text-cyan-400 font-mono font-bold uppercase text-[10px] tracking-wider">
-                  <Activity className="w-3 h-3 text-[#FF6B00]" />
+              <div className="flex items-center justify-between gap-2 mb-1.5">
+                <div className="flex items-center gap-1.5 text-white font-bold text-sm tracking-tight font-heading">
+                  <span className="w-2 h-2 rounded-full bg-[#FF6B00]" />
                   <span>{activeHubHover.name}</span>
                 </div>
-                <span className="text-[9px] font-mono text-slate-400">{activeHubHover.state}</span>
+                <span className="text-[10px] font-mono text-slate-400 uppercase">{activeHubHover.state}</span>
               </div>
 
-              <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-800/80 text-[11px] font-mono">
-                <span className="text-slate-400">{activeHubHover.totalStations} Stations</span>
+              <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-800/80 text-xs">
+                <span className="text-slate-400 font-mono">{activeHubHover.totalStations} Stations</span>
                 <button
                   onClick={() => onSelectCity(activeHubHover.id)}
-                  className="px-3 py-1.5 rounded-xl bg-[#FF6B00] hover:bg-[#FF6B00]/90 text-black font-bold text-xs font-mono transition flex items-center gap-1 shadow-md"
+                  className="px-3.5 py-1.5 rounded-xl bg-[#FF6B00] hover:bg-[#FF7700] text-slate-950 font-bold text-xs tracking-wide transition flex items-center gap-1 shadow-md"
                 >
-                  EXPLORE METRO &rarr;
+                  <span>Explore</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </motion.div>
@@ -788,15 +707,17 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* 4. COMPACT FLOATING MAP CONTROLS (+, −, ↻) */}
+      {/* ========================================================= */}
+      {/* 4. DISCREET FLOATING MAP CONTROLS (+, −, ↻, Filaments)    */}
+      {/* ========================================================= */}
       <div
         id="compact-map-zoom-controls"
-        className="absolute bottom-3 sm:bottom-4 right-3 sm:left-4 sm:right-auto z-20 flex sm:flex-row items-center gap-1 bg-[#070B14]/90 backdrop-blur-xl rounded-2xl p-1 sm:p-1.5 border border-slate-800 shadow-2xl"
+        className="absolute bottom-4 left-4 sm:left-8 z-20 flex items-center gap-1.5 bg-[#0B1021]/85 backdrop-blur-xl rounded-full p-1 border border-slate-800/90 shadow-2xl"
       >
         <button
           id="zoom-in-map-btn"
           onClick={() => handleZoom(0.25)}
-          className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-xl hover:bg-slate-800 text-slate-200 hover:text-cyan-400 transition"
+          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white transition"
           title="Zoom In (+)"
           aria-label="Zoom in"
         >
@@ -805,7 +726,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
         <button
           id="zoom-out-map-btn"
           onClick={() => handleZoom(-0.25)}
-          className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-xl hover:bg-slate-800 text-slate-200 hover:text-cyan-400 transition"
+          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white transition"
           title="Zoom Out (−)"
           aria-label="Zoom out"
         >
@@ -814,40 +735,42 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
         <button
           id="reset-map-view-btn"
           onClick={handleResetMap}
-          className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-xl hover:bg-slate-800 text-slate-200 hover:text-cyan-400 transition"
+          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white transition"
           title="Reset View (↻)"
           aria-label="Reset map"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
 
-        {/* Network Toggle Button on wider screens */}
+        {/* Network Filaments Toggle */}
         <button
           id="toggle-filaments-btn"
           onClick={() => setShowNetworkFilaments(!showNetworkFilaments)}
-          className={`hidden sm:flex px-2 py-1 rounded-xl text-[10px] font-mono font-bold transition items-center gap-1 border ${
+          className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition flex items-center gap-1 border ${
             showNetworkFilaments
-              ? 'bg-cyan-950/80 text-cyan-400 border-cyan-800/80'
+              ? 'bg-[#FF6B00]/15 text-[#FF6B00] border-[#FF6B00]/40'
               : 'text-slate-500 border-slate-800 hover:text-slate-300'
           }`}
-          title="Toggle network connections"
+          title="Toggle Network Corridors"
         >
           <Layers className="w-3 h-3" />
-          <span>NETWORK</span>
+          <span className="hidden sm:inline">MOTION</span>
         </button>
       </div>
 
-      {/* 5. MINIMAL DESKTOP LEGEND HUD */}
-      <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 z-10 hidden md:flex items-center gap-3 bg-[#070B14]/80 backdrop-blur-xl px-3 py-1.5 rounded-2xl border border-slate-800 text-[10px] text-slate-400 font-mono shadow-xl">
+      {/* ========================================================= */}
+      {/* 5. QUIET BOTTOM-RIGHT EDITORIAL LEGEND                    */}
+      {/* ========================================================= */}
+      <div className="absolute bottom-4 right-4 sm:right-8 z-10 hidden md:flex items-center gap-3 bg-[#0B1021]/80 backdrop-blur-xl px-3.5 py-1.5 rounded-full border border-slate-800 text-[11px] text-slate-400 font-mono shadow-xl">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-[#FF6B00] shadow-[0_0_6px_#FF6B00]"></span>
+          <span className="w-2 h-2 rounded-full bg-[#FF6B00]" />
           <span>Metro City</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_6px_#10B981]"></span>
+          <span className="w-2 h-2 rounded-full bg-[#10B981]" />
           <span>Connected</span>
         </div>
-        <div className="text-slate-700">|</div>
+        <span className="text-slate-600">|</span>
         <span className="text-slate-300">Tap city to view network</span>
       </div>
     </div>

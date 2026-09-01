@@ -54,6 +54,7 @@ export const CITY_SHORT_NAMES: Record<string, string> = {
   chennai: 'Chennai',
   ahmedabad: 'Ahmedabad',
   pune: 'Pune',
+  patna: 'Patna',
   nagpur: 'Nagpur',
   kochi: 'Kochi',
   lucknow: 'Lucknow',
@@ -61,7 +62,8 @@ export const CITY_SHORT_NAMES: Record<string, string> = {
   jaipur: 'Jaipur',
   agra: 'Agra',
   noida: 'Noida',
-  gurugram: 'Gurugram',
+  gurgaon: 'Gurgaon',
+  gurugram: 'Gurgaon',
   'navi-mumbai': 'Navi Mumbai',
   bhopal: 'Bhopal',
   indore: 'Indore',
@@ -85,7 +87,7 @@ export const RADIAL_DIRECTIONS: { name: string; angle: number; preferenceWeight:
 ];
 
 // Distance tiers from immediate compact radius to extended radial callout
-export const DISTANCE_TIERS = [14, 22, 32, 46, 62, 80, 100];
+export const DISTANCE_TIERS = [12, 18, 26, 38, 52, 70, 90];
 
 /**
  * Computes exact label bounding box for a given candidate direction and distance.
@@ -277,10 +279,13 @@ export function computeGlobalCityLabelPlacements(
     // Delhi NCR cluster fan-out
     meerut: { preferredAngles: [-35, -45, -20], minDistance: 24 },
     delhi: { preferredAngles: [-135, -145, 180, -90], minDistance: 16 },
+    gurgaon: { preferredAngles: [-160, 145, 180, 135], minDistance: 20 },
     gurugram: { preferredAngles: [-160, 145, 180, 135], minDistance: 20 },
     noida: { preferredAngles: [0, 22, 35, -20], minDistance: 18 },
     agra: { preferredAngles: [35, 45, 20, 0], minDistance: 16 },
     jaipur: { preferredAngles: [-145, -135, 180], minDistance: 16 },
+    // East & Central cluster
+    patna: { preferredAngles: [0, 35, -35, 90], minDistance: 16 },
     // UP cluster
     kanpur: { preferredAngles: [135, 145, 160], minDistance: 16 },
     lucknow: { preferredAngles: [-35, -20, 0], minDistance: 16 },

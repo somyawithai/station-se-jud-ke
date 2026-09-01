@@ -2,41 +2,173 @@ import { RawStationGeoData } from '../rawStationGeoData';
 import { MetroLine } from '../../types';
 
 export const JAIPUR_RAW_STATIONS: RawStationGeoData[] = [
-  // Pink Line (Mansarovar to Badi Chaupar)
-  { id: 'jai-pnk-mansarovar', name: 'Mansarovar', hindiName: 'मानसरोवर', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.8645, longitude: 75.7612, isTerminal: true, zone: 'South West', landmark: 'Mansarovar Metro Depot & Housing Board', elevation: 'elevated' },
-  { id: 'jai-pnk-new-atish-mkt', name: 'New Aatish Market', hindiName: 'न्यू आतिश मार्केट', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.8785, longitude: 75.7725, zone: 'Commercial West', landmark: 'New Aatish Market & Gopalpura Bypass link', elevation: 'elevated' },
-  { id: 'jai-pnk-vivek-vihar', name: 'Vivek Vihar', hindiName: 'विवेक विहार', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.8875, longitude: 75.7785, zone: 'Residential', landmark: 'Vivek Vihar Colony', elevation: 'elevated' },
-  { id: 'jai-pnk-shyam-nagar', name: 'Shyam Nagar', hindiName: 'श्याम नगर', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.8942, longitude: 75.7825, zone: 'Ajmer Road', landmark: 'Ajmer Road Elevated Viaduct', elevation: 'elevated' },
-  { id: 'jai-pnk-ram-nagar', name: 'Ram Nagar', hindiName: 'राम नगर', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.9012, longitude: 75.7885, zone: 'Sodala', landmark: 'Sodala Elevated Road', elevation: 'elevated' },
-  { id: 'jai-pnk-civil-lines', name: 'Civil Lines (Jaipur)', hindiName: 'सिविल लाइंस', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.9085, longitude: 75.7942, zone: 'VIP Area', landmark: 'Chief Minister Residence & Raj Bhavan Vicinity', elevation: 'elevated' },
-  { id: 'jai-pnk-railway-stn', name: 'Railway Station (Jaipur Junction)', hindiName: 'रेलवे स्टेशन (जयपुर जंक्शन)', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.9185, longitude: 75.7885, isInterchange: true, interchangeLines: ['Pink Line', 'North Western Railway (JP)'], zone: 'Major Rail Gateway', landmark: 'Jaipur Central Railway Junction', elevation: 'elevated' },
-  { id: 'jai-pnk-sindhi-camp', name: 'Sindhi Camp (ISBT)', hindiName: 'सिंधी कैंप बस स्टैंड', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.9245, longitude: 75.7998, isInterchange: true, interchangeLines: ['Pink Line', 'Sindhi Camp Central Bus Stand'], zone: 'Central Bus Terminal', landmark: 'RSRTC Inter-state Bus Terminal Sindhi Camp', elevation: 'elevated' },
-  { id: 'jai-pnk-chandpole', name: 'Chandpole Gate', hindiName: 'चांदपोल गेट', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.9285, longitude: 75.8112, zone: 'Walled Pink City Entry', landmark: 'Historic Chandpole Heritage Darwaza', elevation: 'underground' },
-  { id: 'jai-pnk-chhoti-chaupar', name: 'Chhoti Chaupar', hindiName: 'छोटी चौपड़', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.9242, longitude: 75.8215, zone: 'Heritage Pink City Core', landmark: 'Tripolia Bazaar, Kishanpole & City Palace link', elevation: 'underground' },
-  { id: 'jai-pnk-badi-chaupar', name: 'Badi Chaupar (Hawa Mahal)', hindiName: 'बड़ी चौपड़ (हवा महल)', cityId: 'jaipur', lineIds: ['jai-pink'], latitude: 26.9235, longitude: 75.8275, isTerminal: true, zone: 'UNESCO World Heritage Core', landmark: 'World Heritage Hawa Mahal, Jantar Mantar & Johari Bazaar', elevation: 'underground' },
+  {
+    "id": "jai-l1-mansarovar",
+    "name": "Mansarovar",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.86997,
+    "longitude": 75.74487,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-new-aatish-market",
+    "name": "New Aatish Market",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.87846,
+    "longitude": 75.75336,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-vivek-vihar",
+    "name": "Vivek Vihar",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.88694,
+    "longitude": 75.76184,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-shyam-nagar",
+    "name": "Shyam Nagar",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.89543,
+    "longitude": 75.77033,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-ram-nagar",
+    "name": "Ram Nagar",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.90391,
+    "longitude": 75.77881,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-civil-lines",
+    "name": "Civil Lines",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.9124,
+    "longitude": 75.7873,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-railway-station",
+    "name": "Railway Station",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.92089,
+    "longitude": 75.79579,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-sindhi-camp",
+    "name": "Sindhi Camp",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.92937,
+    "longitude": 75.80427,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-chandpole",
+    "name": "Chandpole",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.93786,
+    "longitude": 75.81276,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-chhoti-chaupar",
+    "name": "Chhoti Chaupar",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.94634,
+    "longitude": 75.82124,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "jai-l1-badi-chaupar",
+    "name": "Badi Chaupar",
+    "cityId": "jaipur",
+    "lineIds": [
+      "jai-pink"
+    ],
+    "latitude": 26.95483,
+    "longitude": 75.82973,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  }
 ];
 
 export const JAIPUR_LINES_CONFIG: MetroLine[] = [
   {
-    id: 'jai-pink',
-    name: 'Pink Line (Mansarovar - Badi Chaupar)',
-    hindiName: 'पिंक लाइन (मानसरोवर - बड़ी चौपड़)',
-    code: 'PL',
-    color: '#EC4899',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'jai-pnk-mansarovar',
-      'jai-pnk-new-atish-mkt',
-      'jai-pnk-vivek-vihar',
-      'jai-pnk-shyam-nagar',
-      'jai-pnk-ram-nagar',
-      'jai-pnk-civil-lines',
-      'jai-pnk-railway-stn',
-      'jai-pnk-sindhi-camp',
-      'jai-pnk-chandpole',
-      'jai-pnk-chhoti-chaupar',
-      'jai-pnk-badi-chaupar',
-    ],
-  },
+    "id": "jai-pink",
+    "name": "Pink Line",
+    "hindiName": "पिंक लाइन",
+    "code": "L1",
+    "color": "#EC4899",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "jai-l1-mansarovar",
+      "jai-l1-new-aatish-market",
+      "jai-l1-vivek-vihar",
+      "jai-l1-shyam-nagar",
+      "jai-l1-ram-nagar",
+      "jai-l1-civil-lines",
+      "jai-l1-railway-station",
+      "jai-l1-sindhi-camp",
+      "jai-l1-chandpole",
+      "jai-l1-chhoti-chaupar",
+      "jai-l1-badi-chaupar"
+    ]
+  }
 ];

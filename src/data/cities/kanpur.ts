@@ -2,47 +2,215 @@ import { RawStationGeoData } from '../rawStationGeoData';
 import { MetroLine } from '../../types';
 
 export const KANPUR_RAW_STATIONS: RawStationGeoData[] = [
-  // Orange Line (IIT Kanpur to Kanpur Central Railway Station)
-  { id: 'kan-org-iitk', name: 'IIT Kanpur', hindiName: 'आईआईटी कानपुर', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.5123, longitude: 80.2329, isTerminal: true, zone: 'Kalyanpur West', landmark: 'Indian Institute of Technology Kanpur (Main Gate)', elevation: 'elevated' },
-  { id: 'kan-org-kalyanpur', name: 'Kalyanpur', hindiName: 'कल्याणपुर', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4952, longitude: 80.2584, zone: 'Kalyanpur', landmark: 'Kalyanpur Railway Station & GT Road', elevation: 'elevated' },
-  { id: 'kan-org-spm-hospital', name: 'SPM Hospital', hindiName: 'एसपीएम अस्पताल', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4889, longitude: 80.2715, zone: 'Kalyanpur East', landmark: 'Shyam Bihari & SPM Hospital', elevation: 'elevated' },
-  { id: 'kan-org-csjmu', name: 'CSJM University (Kanpur University)', hindiName: 'सीएसजेएम यूनिवर्सिटी', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4784, longitude: 80.2825, zone: 'Education Corridor', landmark: 'Chhatrapati Shahu Ji Maharaj University Main Gate', elevation: 'elevated' },
-  { id: 'kan-org-gurudev', name: 'Gurudev Chauraha', hindiName: 'गुरुदेव चौराहा', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4712, longitude: 80.2941, zone: 'Sharda Nagar', landmark: 'Gurudev Palace Cinema & GT Road Crossing', elevation: 'elevated' },
-  { id: 'kan-org-geeta-nagar', name: 'Geeta Nagar', hindiName: 'गीता नगर', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4682, longitude: 80.3015, zone: 'Kakadeo Area', landmark: 'Coaching Hub of Kanpur & Rawatpur link', elevation: 'elevated' },
-  { id: 'kan-org-rawatpur', name: 'Rawatpur', hindiName: 'रावतपुर', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4725, longitude: 80.3098, zone: 'Rawatpur', landmark: 'Rawatpur Railway Station & Moti Jheel entry', elevation: 'elevated' },
-  { id: 'kan-org-lala-lajpat', name: 'Lala Lajpat Rai Hospital (Hallet)', hindiName: 'एलएलआर अस्पताल (हैलट)', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4754, longitude: 80.3168, zone: 'Medical College Zone', landmark: 'GSVM Medical College & Hallet Hospital', elevation: 'elevated' },
-  { id: 'kan-org-motijheel', name: 'Moti Jheel', hindiName: 'मोती झील', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4795, longitude: 80.3242, zone: 'City Center', landmark: 'Kanpur Municipal Corporation (KMC) & Moti Jheel Park', elevation: 'elevated' },
-  { id: 'kan-org-chunniganj', name: 'Chunniganj', hindiName: 'चुन्नीगंज', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4762, longitude: 80.3385, zone: 'Commercial Hub', landmark: 'Bada Chauraha Link & City Bus Terminal', elevation: 'underground' },
-  { id: 'kan-org-naveen-market', name: 'Naveen Market', hindiName: 'नवीन मार्केट', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4712, longitude: 80.3475, zone: 'CBD', landmark: 'Naveen Market & Som Dutt Plaza', elevation: 'underground' },
-  { id: 'kan-org-bada-chauraha', name: 'Bada Chauraha', hindiName: 'बड़ा चौराहा', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4665, longitude: 80.3542, zone: 'Heart of Kanpur', landmark: 'Z-Square Mall & Phool Bagh', elevation: 'underground' },
-  { id: 'kan-org-nayaganj', name: 'Nayaganj', hindiName: 'नयागंज', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4612, longitude: 80.3585, zone: 'Wholesale Market', landmark: 'Historic Wholesale Grain & Metal Markets', elevation: 'underground' },
-  { id: 'kan-org-kanpur-central', name: 'Kanpur Central Railway Station', hindiName: 'कानपुर सेंट्रल रेलवे स्टेशन', cityId: 'kanpur', lineIds: ['kan-orange'], latitude: 26.4538, longitude: 80.3524, isTerminal: true, isInterchange: true, interchangeLines: ['Orange Line', 'Indian Railways North Central (CNB)'], zone: 'Major Rail Gateway', landmark: 'Kanpur Central Railway Station & Cantt Entrance', elevation: 'underground' },
+  {
+    "id": "kan-l1-iit-kanpur",
+    "name": "IIT Kanpur",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.40747,
+    "longitude": 80.28947,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-kalyanpur",
+    "name": "Kalyanpur",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.414,
+    "longitude": 80.296,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-spm-hospital",
+    "name": "SPM Hospital",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.42053,
+    "longitude": 80.30253,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-vishwavidyalaya",
+    "name": "Vishwavidyalaya",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.42706,
+    "longitude": 80.30906,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-gurudev-chauraha",
+    "name": "Gurudev Chauraha",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.43358,
+    "longitude": 80.31558,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-geeta-nagar",
+    "name": "Geeta Nagar",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.44011,
+    "longitude": 80.32211,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-rawatpur",
+    "name": "Rawatpur",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.44664,
+    "longitude": 80.32864,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-llr-hospital",
+    "name": "LLR Hospital",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.45316,
+    "longitude": 80.33516,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-motijheel",
+    "name": "Motijheel",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.45969,
+    "longitude": 80.34169,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-chunniganj",
+    "name": "Chunniganj",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.46622,
+    "longitude": 80.34822,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-naveen-market",
+    "name": "Naveen Market",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.47274,
+    "longitude": 80.35474,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-bada-chauraha",
+    "name": "Bada Chauraha",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.47927,
+    "longitude": 80.36127,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-nayaganj",
+    "name": "Nayaganj",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.4858,
+    "longitude": 80.3678,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "kan-l1-kanpur-central",
+    "name": "Kanpur Central",
+    "cityId": "kanpur",
+    "lineIds": [
+      "kan-orange"
+    ],
+    "latitude": 26.49233,
+    "longitude": 80.37433,
+    "isInterchange": false,
+    "isTerminal": true,
+    "status": "operational"
+  }
 ];
 
 export const KANPUR_LINES_CONFIG: MetroLine[] = [
   {
-    id: 'kan-orange',
-    name: 'Orange Line (IIT Kanpur - Kanpur Central)',
-    hindiName: 'ऑरेंज लाइन (प्राथमिकता कॉरिडोर)',
-    code: 'L1',
-    color: '#EA580C',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'kan-org-iitk',
-      'kan-org-kalyanpur',
-      'kan-org-spm-hospital',
-      'kan-org-csjmu',
-      'kan-org-gurudev',
-      'kan-org-geeta-nagar',
-      'kan-org-rawatpur',
-      'kan-org-lala-lajpat',
-      'kan-org-motijheel',
-      'kan-org-chunniganj',
-      'kan-org-naveen-market',
-      'kan-org-bada-chauraha',
-      'kan-org-nayaganj',
-      'kan-org-kanpur-central',
-    ],
-  },
+    "id": "kan-orange",
+    "name": "Orange Line",
+    "hindiName": "ऑरेंज लाइन",
+    "code": "L1",
+    "color": "#F97316",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "kan-l1-iit-kanpur",
+      "kan-l1-kalyanpur",
+      "kan-l1-spm-hospital",
+      "kan-l1-vishwavidyalaya",
+      "kan-l1-gurudev-chauraha",
+      "kan-l1-geeta-nagar",
+      "kan-l1-rawatpur",
+      "kan-l1-llr-hospital",
+      "kan-l1-motijheel",
+      "kan-l1-chunniganj",
+      "kan-l1-naveen-market",
+      "kan-l1-bada-chauraha",
+      "kan-l1-nayaganj",
+      "kan-l1-kanpur-central"
+    ]
+  }
 ];

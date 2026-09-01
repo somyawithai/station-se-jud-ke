@@ -13,7 +13,9 @@ import {
   X,
   MapPin,
   Train,
+  Sparkles,
 } from 'lucide-react';
+import { computeStationLabelPlacements, StationLabelPlacement } from '../utils/stationLabelCollision';
 
 interface MetroMapCanvasProps {
   city: CityMetroNetwork;
@@ -34,7 +36,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
-  // Filtering & Searching
+  // Filtering & Searching & Station Priority
   const [activeLineFilter, setActiveLineFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredStation, setHoveredStation] = useState<MetroStation | null>(null);
@@ -65,6 +67,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
   }, []);
 
   // Compute dynamic responsive viewBox matching the container's exact aspect ratio
+  // Smart Viewport Fit: automatically calculates a suitable zoom & bounding box so the entire network fits cleanly
   const dynamicViewBox = useMemo(() => {
     if (!city.stations || city.stations.length === 0) {
       return { minX: 0, minY: 0, width: 1000, height: 800, string: '0 0 1000 800' };
@@ -88,10 +91,10 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
     const cy = (minY + maxY) / 2;
 
     const isMobile = containerDim.width < 768;
-    // Padding: generous side padding, and extra top padding on mobile so floating search doesn't cover top stations
-    const padX = isMobile ? 45 : 70;
-    const padTop = isMobile ? 120 : 80;
-    const padBottom = isMobile ? 65 : 70;
+    // Generous padding: on mobile, extra top room for top floating search and bottom room for zoom tools
+    const padX = isMobile ? 50 : 85;
+    const padTop = isMobile ? 125 : 90;
+    const padBottom = isMobile ? 75 : 80;
 
     const paddedW = contentW + padX * 2;
     const paddedH = contentH + padTop + padBottom;
@@ -138,12 +141,22 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
     setSelectedPreviewStation(null);
   }, [city.id]);
 
-  // Center on station helper
+  // If user has a confirmed selection in this city, set it as initial preview
+  useEffect(() => {
+    if (userSelection?.stationId) {
+      const st = city.stations.find((s) => s.id === userSelection.stationId);
+      if (st) {
+        setSelectedPreviewStation(st);
+      }
+    }
+  }, [userSelection?.stationId, city.stations]);
+
+  // Center on station helper with smooth transition
   const centerOnStation = useCallback(
     (station: MetroStation) => {
       if (!containerRef.current) return;
       const container = containerRef.current.getBoundingClientRect();
-      const targetScale = 1.5;
+      const targetScale = 1.75;
 
       const vb = dynamicViewBox;
       const centerX = container.width / 2;
@@ -165,7 +178,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
   // Handle Zoom controls
   const handleZoom = (delta: number) => {
     setScale((prev) => {
-      const next = Math.min(Math.max(prev + delta, 0.5), 3.5);
+      const next = Math.min(Math.max(prev + delta, 0.6), 3.8);
       return Number(next.toFixed(2));
     });
   };
@@ -173,7 +186,6 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
   const handleResetView = () => {
     setScale(1);
     setPan({ x: 0, y: 0 });
-    setSelectedPreviewStation(null);
   };
 
   // Mouse drag handlers
@@ -198,7 +210,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     const zoomFactor = -e.deltaY * 0.0012;
-    setScale((prev) => Math.min(Math.max(prev + zoomFactor, 0.5), 3.5));
+    setScale((prev) => Math.min(Math.max(prev + zoomFactor, 0.6), 3.8));
   };
 
   // Touch Handlers for Mobile Pan & Pinch-to-zoom
@@ -229,7 +241,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
       const touch2 = e.touches[1];
       const currentDist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
       const scaleMultiplier = currentDist / touchStartDistRef.current;
-      setScale((prev) => Math.min(Math.max(prev * scaleMultiplier, 0.5), 3.5));
+      setScale((prev) => Math.min(Math.max(prev * scaleMultiplier, 0.6), 3.8));
       touchStartDistRef.current = currentDist;
     }
   };
@@ -253,6 +265,49 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
   const visibleLines = activeLineFilter
     ? city.lines.filter((l) => l.id === activeLineFilter)
     : city.lines;
+
+  // Active Station Priority targets
+  const selectedStationId = userSelection?.stationId || selectedPreviewStation?.id || null;
+  const hoveredStationId = hoveredStation?.id || null;
+
+  // Calculate dynamic label placements using real collision avoidance & progressive disclosure
+  const labelPlacements = useMemo(() => {
+    return computeStationLabelPlacements(
+      city.stations,
+      city.lines,
+      scale,
+      dynamicViewBox,
+      containerDim.width,
+      selectedStationId,
+      hoveredStationId,
+      city.popularStations || []
+    );
+  }, [
+    city.stations,
+    city.lines,
+    scale,
+    dynamicViewBox,
+    containerDim.width,
+    selectedStationId,
+    hoveredStationId,
+    city.popularStations,
+  ]);
+
+  // Determine current Zoom disclosure tier label for UX feedback
+  const zoomDisclosureTier = useMemo(() => {
+    if (scale < 0.95) return 'Network Overview (Major Hubs)';
+    if (scale < 1.45) return 'Medium Zoom (Interchanges & Key Stations)';
+    if (scale < 2.2) return 'Detailed View (All Stations Active)';
+    return 'Close Inspection (Full Station Details)';
+  }, [scale]);
+
+  const visibleLabelCount = useMemo(() => {
+    let count = 0;
+    labelPlacements.forEach((p) => {
+      if (p.isVisible) count++;
+    });
+    return count;
+  }, [labelPlacements]);
 
   return (
     <div
@@ -477,7 +532,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
             y: pan.y,
             scale: scale,
           }}
-          transition={{ type: 'tween', duration: isDragging ? 0 : 0.15 }}
+          transition={{ type: 'tween', ease: [0.16, 1, 0.3, 1], duration: isDragging ? 0 : 0.22 }}
           style={{ willChange: 'transform' }}
         >
           <svg
@@ -488,7 +543,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
           >
             <defs>
               <filter id="metroLineGlow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feGaussianBlur stdDeviation={scale > 1.5 ? '2.5' : '4'} result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -496,7 +551,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
               </filter>
 
               <filter id="stationDropShadowDarkCanvas" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#000000" floodOpacity="0.8" />
+                <feDropShadow dx="0" dy="1.5" stdDeviation="3" floodColor="#000000" floodOpacity="0.8" />
               </filter>
 
               <pattern id="cityCanvasGrid" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -506,7 +561,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                   stroke="#1E293B"
                   strokeWidth="0.5"
                   strokeDasharray="2 6"
-                  opacity="0.4"
+                  opacity="0.35"
                 />
               </pattern>
             </defs>
@@ -520,21 +575,23 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
               fill="url(#cityCanvasGrid)"
             />
 
-            {/* Line Routes Layer */}
+            {/* Line Routes Layer (Kept clean and behind station dots without overpowering labels) */}
             <g id="metro-routes-layer">
               {visibleLines.map((line) => {
                 return (
                   <g key={line.id} id={`line-${line.id}`}>
+                    {/* Subtle outer glow that scales gracefully with zoom */}
                     <path
                       d={line.pathD}
                       fill="none"
                       stroke={line.color}
-                      strokeWidth={(line.strokeWidth || 6) + 6}
-                      strokeOpacity="0.2"
+                      strokeWidth={(line.strokeWidth || 6) + (scale > 1.5 ? 3 : 5)}
+                      strokeOpacity={scale > 1.5 ? 0.15 : 0.22}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       filter="url(#metroLineGlow)"
                     />
+                    {/* Core Line Track */}
                     <path
                       d={line.pathD}
                       fill="none"
@@ -544,12 +601,13 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                       strokeLinejoin="round"
                       className="transition-all duration-300"
                     />
+                    {/* Center high-contrast track highlight */}
                     <path
                       d={line.pathD}
                       fill="none"
                       stroke="#FFFFFF"
                       strokeWidth="1.5"
-                      strokeOpacity="0.4"
+                      strokeOpacity="0.35"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
@@ -558,7 +616,34 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
               })}
             </g>
 
-            {/* Station Nodes Layer with Minimum 44px Touch Targets */}
+            {/* Station Leader Lines Layer (renders connecting lines for displaced labels) */}
+            <g id="station-leader-lines-layer" className="pointer-events-none">
+              {city.stations.map((station) => {
+                const placement = labelPlacements.get(station.id);
+                if (!placement || !placement.isVisible || !placement.hasLeaderLine || !placement.leaderPath) {
+                  return null;
+                }
+                const isConfirmed = userSelection?.stationId === station.id;
+                const isHovered = hoveredStation?.id === station.id;
+                const isSelected = selectedPreviewStation?.id === station.id;
+                const activeHighlight = isConfirmed || isHovered || isSelected;
+
+                return (
+                  <path
+                    key={`leader-${station.id}`}
+                    d={placement.leaderPath}
+                    fill="none"
+                    stroke={activeHighlight ? '#38BDF8' : '#64748B'}
+                    strokeWidth={activeHighlight ? 1.5 : 1}
+                    strokeDasharray={activeHighlight ? undefined : '2 3'}
+                    strokeOpacity={activeHighlight ? 0.9 : 0.6}
+                    strokeLinecap="round"
+                  />
+                );
+              })}
+            </g>
+
+            {/* Station Nodes Layer (All station dots remain visible & distinct, even if labels are hidden) */}
             <g id="metro-stations-layer">
               {city.stations.map((station) => {
                 const isLineVisible =
@@ -571,7 +656,8 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                 const primaryLine = city.lines.find((l) => l.id === station.lineIds[0]);
                 const stationColor = primaryLine ? primaryLine.color : '#FF6B00';
 
-                const nodeRadius = station.isInterchange ? 9.5 : station.isTerminal ? 8 : 6.5;
+                // Node visual size: interchange is double-ring, normal is clean circle
+                const nodeRadius = station.isInterchange ? 9 : station.isTerminal ? 7.5 : 6;
 
                 return (
                   <g
@@ -582,11 +668,12 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectStation(station);
+                      setSelectedPreviewStation(station);
                     }}
                     onMouseEnter={() => setHoveredStation(station)}
                     onMouseLeave={() => setHoveredStation(null)}
                   >
-                    {/* Minimum 44px × 44px (radius 22px) touch target for mobile */}
+                    {/* Minimum 44px × 44px (radius 22px) touch target for effortless tapping */}
                     <circle
                       cx="0"
                       cy="0"
@@ -595,13 +682,13 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                       className="cursor-pointer"
                     />
 
-                    {/* User's Confirmed Nearest Station Animated Ring */}
+                    {/* Confirmed Nearest Station Animated Beacon */}
                     {isConfirmed && (
                       <g className="pointer-events-none">
                         <circle
                           cx="0"
                           cy="0"
-                          r={nodeRadius + 14}
+                          r={nodeRadius + 12}
                           fill="#10B981"
                           fillOpacity="0.25"
                           className="animate-ping origin-center"
@@ -609,30 +696,30 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                         <circle
                           cx="0"
                           cy="0"
-                          r={nodeRadius + 8}
+                          r={nodeRadius + 7}
                           fill="none"
                           stroke="#10B981"
                           strokeWidth="2"
                           strokeDasharray="3 3"
                           className="animate-spin origin-center"
-                          style={{ animationDuration: '8s' }}
+                          style={{ animationDuration: '7s' }}
                         />
                       </g>
                     )}
 
-                    {/* Selected Highlight Halo */}
+                    {/* Selected or Hovered Highlight Halo */}
                     {(isHovered || isSelectedForPreview) && !isConfirmed && (
                       <circle
                         cx="0"
                         cy="0"
-                        r={nodeRadius + 7}
+                        r={nodeRadius + 6}
                         fill="#00F0FF"
-                        fillOpacity="0.25"
+                        fillOpacity="0.28"
                         className="animate-pulse origin-center pointer-events-none"
                       />
                     )}
 
-                    {/* Interchange Double-Ring or Normal Station Node */}
+                    {/* Interchange Double-Ring vs Clean Normal Station Node */}
                     {station.isInterchange ? (
                       <g className="pointer-events-none">
                         <circle
@@ -640,15 +727,15 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                           cy="0"
                           r={nodeRadius}
                           fill="#070B14"
-                          stroke={isConfirmed ? '#10B981' : isHovered ? '#00F0FF' : '#FFFFFF'}
-                          strokeWidth="2.5"
+                          stroke={isConfirmed ? '#10B981' : isHovered || isSelectedForPreview ? '#00F0FF' : '#FFFFFF'}
+                          strokeWidth="2.2"
                           filter="url(#stationDropShadowDarkCanvas)"
                         />
                         <circle
                           cx="0"
                           cy="0"
-                          r={nodeRadius - 4}
-                          fill={isConfirmed ? '#10B981' : isHovered ? '#FF6B00' : stationColor}
+                          r={nodeRadius - 3.8}
+                          fill={isConfirmed ? '#10B981' : isHovered || isSelectedForPreview ? '#FF6B00' : stationColor}
                         />
                       </g>
                     ) : (
@@ -656,57 +743,98 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
                         cx="0"
                         cy="0"
                         r={nodeRadius}
-                        fill={isConfirmed ? '#10B981' : isHovered ? '#00F0FF' : '#070B14'}
-                        stroke={isConfirmed ? '#10B981' : isHovered ? '#FFFFFF' : stationColor}
-                        strokeWidth="2.5"
+                        fill={isConfirmed ? '#10B981' : isHovered || isSelectedForPreview ? '#00F0FF' : '#070B14'}
+                        stroke={isConfirmed ? '#10B981' : isHovered || isSelectedForPreview ? '#FFFFFF' : stationColor}
+                        strokeWidth="2.2"
                         filter="url(#stationDropShadowDarkCanvas)"
                         className="pointer-events-none"
                       />
                     )}
+                  </g>
+                );
+              })}
+            </g>
 
-                    {/* Station Name Typography Label */}
-                    <g
-                      className="pointer-events-none"
-                      transform={`translate(0, ${
-                        station.coordinates.y > dynamicViewBox.minY + dynamicViewBox.height * 0.8
-                          ? -(nodeRadius + 11)
-                          : nodeRadius + 14
-                      })`}
+            {/* Station Typography Labels Layer (Zoom-Dependent Collision-Avoided Non-Overlapping Labels) */}
+            <g id="station-labels-layer" className="pointer-events-none">
+              {city.stations.map((station) => {
+                const placement = labelPlacements.get(station.id);
+                if (!placement || !placement.isVisible) return null;
+
+                const isConfirmed = userSelection?.stationId === station.id;
+                const isHovered = hoveredStation?.id === station.id;
+                const isSelected = selectedPreviewStation?.id === station.id;
+                const isFeatured = isConfirmed || isHovered || isSelected;
+
+                const labelFill = isConfirmed
+                  ? '#34D399'
+                  : isHovered || isSelected
+                  ? '#38BDF8'
+                  : placement.isInterchange
+                  ? '#FFFFFF'
+                  : '#E2E8F0';
+
+                return (
+                  <g
+                    key={`label-${station.id}`}
+                    id={`station-label-${station.id}`}
+                    transform={`translate(${placement.labelX}, ${placement.labelY})`}
+                    style={{
+                      transition: 'opacity 0.25s ease-out, transform 0.25s ease-out',
+                      opacity: placement.opacity,
+                    }}
+                  >
+                    {/* Subtle translucent dark background pill to guarantee contrast over crossed metro lines */}
+                    <rect
+                      x={
+                        placement.textAnchor === 'middle'
+                          ? -placement.labelWidth / 2 - 3
+                          : placement.textAnchor === 'end'
+                          ? -placement.labelWidth - 4
+                          : -3
+                      }
+                      y="-2"
+                      width={placement.labelWidth + 6}
+                      height={placement.labelHeight + 4}
+                      rx="4"
+                      fill="#050811"
+                      fillOpacity={isFeatured ? 0.95 : 0.82}
+                      stroke={isFeatured ? '#0284C7' : '#1E293B'}
+                      strokeWidth={isFeatured ? 1 : 0.5}
+                      strokeOpacity={isFeatured ? 0.9 : 0.5}
+                    />
+
+                    {/* Primary English Station Name */}
+                    <text
+                      x="0"
+                      y="10"
+                      textAnchor={placement.textAnchor}
+                      className="font-mono select-none"
+                      style={{
+                        fontSize: isFeatured ? '11px' : placement.isInterchange ? '10.5px' : '9.5px',
+                        fontWeight: isFeatured ? '900' : placement.isInterchange ? '800' : '600',
+                        fill: labelFill,
+                        letterSpacing: '0.02em',
+                      }}
                     >
+                      {station.name}
+                    </text>
+
+                    {/* Hindi Localized Name when available */}
+                    {station.hindiName && (
                       <text
                         x="0"
-                        y="0"
-                        textAnchor="middle"
-                        className="text-[10px] sm:text-[11px] font-bold fill-slate-100 font-mono tracking-wide select-none"
+                        y="20"
+                        textAnchor={placement.textAnchor}
+                        className="font-serif-indian select-none"
                         style={{
-                          paintOrder: 'stroke',
-                          stroke: '#050811',
-                          strokeWidth: '4px',
-                          strokeLinejoin: 'round',
-                          fontWeight: isConfirmed || isHovered ? '900' : '700',
-                          fill: isConfirmed ? '#34D399' : isHovered ? '#38BDF8' : '#F1F5F9',
+                          fontSize: '8px',
+                          fill: isFeatured ? '#CBD5E1' : '#94A3B8',
                         }}
                       >
-                        {station.name}
+                        {station.hindiName}
                       </text>
-
-                      {station.hindiName && (
-                        <text
-                          x="0"
-                          y="11"
-                          textAnchor="middle"
-                          className="text-[8px] sm:text-[9px] fill-slate-400 font-serif-indian select-none"
-                          style={{
-                            paintOrder: 'stroke',
-                            stroke: '#050811',
-                            strokeWidth: '3px',
-                            strokeLinejoin: 'round',
-                          }}
-                        >
-                          {station.hindiName}
-                        </text>
-                      )}
-                    </g>
+                    )}
                   </g>
                 );
               })}
@@ -714,67 +842,97 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
           </svg>
         </motion.div>
 
-        {/* Hover / Tap Station Quick Detail Overlay Card */}
+        {/* Dynamic Zoom Level & Density Pill Indicator */}
+        <div className="absolute top-14 sm:top-16 left-2.5 sm:left-4 z-20 hidden sm:flex items-center gap-2 bg-[#070B14]/85 backdrop-blur-xl px-3 py-1.5 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-300 shadow-xl pointer-events-none">
+          <Sparkles className="w-3 h-3 text-cyan-400" />
+          <span>{zoomDisclosureTier}</span>
+          <span className="text-slate-600">|</span>
+          <span className="text-cyan-300 font-bold">
+            {visibleLabelCount}/{city.stations.length} labels
+          </span>
+        </div>
+
+        {/* Selected / Hover / Tap Station Detail Card */}
         <AnimatePresence>
-          {hoveredStation && (
+          {(hoveredStation || selectedPreviewStation) && (
             <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className="absolute bottom-16 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-sm z-30 bg-[#070B14]/95 backdrop-blur-2xl text-white rounded-2xl p-4 shadow-2xl border border-cyan-500/40 pointer-events-auto"
+              exit={{ opacity: 0, y: 12, scale: 0.95 }}
+              className="absolute bottom-16 sm:bottom-16 left-3 right-3 sm:left-auto sm:right-4 sm:max-w-sm z-30 bg-[#070B14]/95 backdrop-blur-2xl text-white rounded-2xl p-3.5 sm:p-4 shadow-2xl border border-cyan-500/40 pointer-events-auto"
             >
-              <div className="flex items-start justify-between gap-3 mb-2">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-base font-extrabold text-white">
-                      {hoveredStation.name}
-                    </h4>
-                    {hoveredStation.isInterchange && (
-                      <span className="px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-700 text-[9px] font-mono font-bold uppercase">
-                        Interchange
-                      </span>
+              {(() => {
+                const activeSt = hoveredStation || selectedPreviewStation!;
+                const isSelectedThis = userSelection?.stationId === activeSt.id;
+                return (
+                  <div>
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <h4 className="text-sm sm:text-base font-extrabold text-white">
+                            {activeSt.name}
+                          </h4>
+                          {activeSt.isInterchange && (
+                            <span className="px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-700 text-[9px] font-mono font-bold uppercase">
+                              Interchange
+                            </span>
+                          )}
+                          {isSelectedThis && (
+                            <span className="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-700 text-[9px] font-mono font-bold uppercase">
+                              Your Station
+                            </span>
+                          )}
+                        </div>
+                        {activeSt.hindiName && (
+                          <p className="text-xs text-slate-400 font-serif-indian">
+                            {activeSt.hindiName}
+                          </p>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          onSelectStation(activeSt);
+                          setSelectedPreviewStation(activeSt);
+                        }}
+                        className={`px-3 py-1.5 rounded-xl font-bold text-xs font-mono shadow-md transition ${
+                          isSelectedThis
+                            ? 'bg-emerald-500 text-black hover:bg-emerald-400'
+                            : 'bg-[#FF6B00] text-black hover:bg-amber-400'
+                        }`}
+                      >
+                        {isSelectedThis ? 'CONNECTED ✓' : 'CONNECT'}
+                      </button>
+                    </div>
+
+                    {activeSt.landmark && (
+                      <p className="text-xs text-slate-300 mb-2 flex items-center gap-1.5">
+                        <Info className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
+                        <span>{activeSt.landmark}</span>
+                      </p>
                     )}
+
+                    <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-800">
+                      {activeSt.lineIds.map((lid) => {
+                        const line = city.lines.find((l) => l.id === lid);
+                        return (
+                          <span
+                            key={lid}
+                            className="px-2 py-0.5 rounded-lg text-[10px] font-mono font-semibold"
+                            style={{
+                              backgroundColor: line ? `${line.color}25` : '#FF6B0025',
+                              color: line ? line.color : '#FF6B00',
+                              border: `1px solid ${line ? line.color : '#FF6B00'}50`,
+                            }}
+                          >
+                            {line ? line.name : lid}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </div>
-                  {hoveredStation.hindiName && (
-                    <p className="text-xs text-slate-400 font-serif-indian">
-                      {hoveredStation.hindiName}
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  onClick={() => onSelectStation(hoveredStation)}
-                  className="px-3 py-1.5 rounded-xl bg-[#FF6B00] text-black font-bold text-xs font-mono shadow-md"
-                >
-                  CONNECT
-                </button>
-              </div>
-
-              {hoveredStation.landmark && (
-                <p className="text-xs text-slate-300 mb-2 flex items-center gap-1.5">
-                  <Info className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
-                  <span>{hoveredStation.landmark}</span>
-                </p>
-              )}
-
-              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-800">
-                {hoveredStation.lineIds.map((lid) => {
-                  const line = city.lines.find((l) => l.id === lid);
-                  return (
-                    <span
-                      key={lid}
-                      className="px-2 py-0.5 rounded-lg text-[10px] font-mono font-semibold"
-                      style={{
-                        backgroundColor: line ? `${line.color}25` : '#FF6B0025',
-                        color: line ? line.color : '#FF6B00',
-                        border: `1px solid ${line ? line.color : '#FF6B00'}50`,
-                      }}
-                    >
-                      {line ? line.name : lid}
-                    </span>
-                  );
-                })}
-              </div>
+                );
+              })()}
             </motion.div>
           )}
         </AnimatePresence>
@@ -787,16 +945,16 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
       >
         <button
           id="zoom-in-btn"
-          onClick={() => handleZoom(0.25)}
+          onClick={() => handleZoom(0.3)}
           className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-xl hover:bg-slate-800 text-slate-200 hover:text-cyan-400 transition"
-          title="Zoom In"
+          title="Zoom In (Reveals more stations)"
           aria-label="Zoom in"
         >
           <ZoomIn className="w-4 h-4" />
         </button>
         <button
           id="zoom-out-btn"
-          onClick={() => handleZoom(-0.25)}
+          onClick={() => handleZoom(-0.3)}
           className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-xl hover:bg-slate-800 text-slate-200 hover:text-cyan-400 transition"
           title="Zoom Out"
           aria-label="Zoom out"
@@ -814,7 +972,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
         </button>
       </div>
 
-      {/* Desktop Legend & Instructions Hint */}
+      {/* Desktop Legend & Progressive Zoom Hint */}
       <div className="absolute bottom-4 right-4 z-10 hidden md:flex items-center gap-3 bg-[#070B14]/80 backdrop-blur-xl px-3.5 py-1.5 rounded-2xl border border-slate-800 text-xs text-slate-400 font-mono shadow-xl">
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full border-2 border-white bg-[#070B14]"></span>
@@ -825,7 +983,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
           <span>Your Station</span>
         </div>
         <div className="text-slate-600">|</div>
-        <div className="text-slate-300">Tap station to connect</div>
+        <div className="text-slate-300">Scroll/pinch to zoom in for all station names</div>
       </div>
     </div>
   );

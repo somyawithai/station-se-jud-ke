@@ -25,6 +25,7 @@ interface CityHeaderProps {
   onSelectCity: (cityId: string | null) => void;
   onOpenAnalytics: () => void;
   onOpenMyStations: () => void;
+  onReplayIntro?: () => void;
 }
 
 export const CityHeader: React.FC<CityHeaderProps> = ({
@@ -33,6 +34,7 @@ export const CityHeader: React.FC<CityHeaderProps> = ({
   onSelectCity,
   onOpenAnalytics,
   onOpenMyStations,
+  onReplayIntro,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -88,7 +90,7 @@ export const CityHeader: React.FC<CityHeaderProps> = ({
               </span>
               <span className="hidden md:inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-800/50 text-[9px] font-mono font-bold uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                20 METROS
+                21 METROS
               </span>
             </div>
             <p className="hidden sm:block text-[9px] sm:text-[10px] text-slate-400 font-mono tracking-wider truncate">
@@ -258,6 +260,18 @@ export const CityHeader: React.FC<CityHeaderProps> = ({
 
         {/* DESKTOP ONLY RIGHT: Telemetry & My Stations */}
         <div className="hidden md:flex items-center gap-2">
+          {onReplayIntro && (
+            <button
+              id="header-replay-intro-btn"
+              onClick={onReplayIntro}
+              className="px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:border-[#FF6B00]/60 hover:bg-slate-800 text-slate-400 hover:text-white transition text-xs font-semibold flex items-center gap-1.5 shadow-sm"
+              title="Replay Cinematic Intro"
+            >
+              <Zap className="w-3.5 h-3.5 text-[#FF6B00]" />
+              <span className="font-mono uppercase text-[11px]">Intro</span>
+            </button>
+          )}
+
           <button
             id="header-national-stats-btn"
             onClick={onOpenAnalytics}
@@ -394,6 +408,19 @@ export const CityHeader: React.FC<CityHeaderProps> = ({
                   <Sparkles className="w-4 h-4 text-cyan-400" />
                   <span>Live Transit Telemetry</span>
                 </button>
+
+                {onReplayIntro && (
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      onReplayIntro();
+                    }}
+                    className="col-span-2 p-2.5 rounded-xl border border-[#FF6B00]/40 bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] text-xs font-mono font-bold flex items-center justify-center gap-2"
+                  >
+                    <Zap className="w-4 h-4 text-[#FF6B00]" />
+                    <span>Replay Cinematic Intro</span>
+                  </button>
+                )}
               </div>
 
               {/* City Search in Drawer */}

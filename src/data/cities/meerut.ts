@@ -2,35 +2,203 @@ import { RawStationGeoData } from '../rawStationGeoData';
 import { MetroLine } from '../../types';
 
 export const MEERUT_RAW_STATIONS: RawStationGeoData[] = [
-  // Meerut Metro Local Section (operated by NCRTC on dedicated local transit infrastructure)
-  { id: 'mee-met-meerut-south', name: 'Meerut South (Partapur)', hindiName: 'मेरठ साउथ (परतापुर)', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 28.9102, longitude: 77.6405, isTerminal: true, isInterchange: true, interchangeLines: ['Meerut Metro Line 1', 'Namo Bharat RRTS Rapid Rail'], zone: 'South Meerut Gateway', landmark: 'Partapur Interchange & Delhi-Meerut Expressway', elevation: 'elevated' },
-  { id: 'mee-met-ri-nagar', name: 'Rithani', hindiName: 'रिठानी', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 28.9285, longitude: 77.6525, zone: 'Industrial Corridor', landmark: 'Rithani Industrial Belt', elevation: 'elevated' },
-  { id: 'mee-met-shatabdi-nagar', name: 'Shatabdi Nagar', hindiName: 'शताब्दी नगर', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 28.9412, longitude: 77.6625, isInterchange: true, interchangeLines: ['Meerut Metro', 'Namo Bharat RRTS'], zone: 'Industrial & Housing', landmark: 'Shatabdi Nagar Sector 4', elevation: 'elevated' },
-  { id: 'mee-met-brahmpuri', name: 'Brahmpuri', hindiName: 'ब्रह्मपुरी', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 28.9612, longitude: 77.6812, zone: 'South Central Meerut', landmark: 'Brahmpuri Commercial Road', elevation: 'elevated' },
-  { id: 'mee-met-meerut-central', name: 'Meerut Central (Football Chowk)', hindiName: 'मेरठ सेंट्रल (फुटबॉल चौक)', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 28.9745, longitude: 77.6925, zone: 'Sports Goods Manufacturing Hub', landmark: 'Meerut Sports Goods Cluster & Cantt Road', elevation: 'underground' },
-  { id: 'mee-met-bhainsali', name: 'Bhainsali Bus Terminal', hindiName: 'भैंसाली बस अड्डा', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 28.9812, longitude: 77.6985, isInterchange: true, interchangeLines: ['Meerut Metro', 'Bhainsali UPSRTC Central Bus Stand'], zone: 'Central Bus Transit', landmark: 'Bhainsali Bus Stand & Town Hall', elevation: 'underground' },
-  { id: 'mee-met-begumpul', name: 'Begumpul', hindiName: 'बेगमपुल', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 28.9885, longitude: 77.7042, isInterchange: true, interchangeLines: ['Meerut Metro', 'Namo Bharat RRTS'], zone: 'Commercial Heart of Meerut', landmark: 'Abu Lane Market, Sadar Bazaar & Cantt', elevation: 'underground' },
-  { id: 'mee-met-modipuram', name: 'Modipuram (Depot)', hindiName: 'मोदीपुरम डिपो', cityId: 'meerut', lineIds: ['mee-metro-1'], latitude: 29.0682, longitude: 77.7125, isTerminal: true, isInterchange: true, interchangeLines: ['Meerut Metro', 'Namo Bharat RRTS'], zone: 'North Gateway & Metro Depot', landmark: 'Modipuram Metro Depot & SVP University of Agriculture', elevation: 'elevated' },
+  {
+    "id": "mee-mm-meerut-south",
+    "name": "Meerut South",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.94207,
+    "longitude": 77.66397,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Meerut Metro",
+      "Delhi–Meerut Namo Bharat (RRTS)"
+    ],
+    "isTerminal": true,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-partapur",
+    "name": "Partapur",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.94979,
+    "longitude": 77.67169,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-rithani",
+    "name": "Rithani",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.9575,
+    "longitude": 77.6794,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-shatabdi-nagar",
+    "name": "Shatabdi Nagar",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.96522,
+    "longitude": 77.68712,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Meerut Metro",
+      "Delhi–Meerut Namo Bharat (RRTS)"
+    ],
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-brahmapuri",
+    "name": "Brahmapuri",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.97293,
+    "longitude": 77.69483,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-meerut-central",
+    "name": "Meerut Central",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.98064,
+    "longitude": 77.70254,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-bhaisali",
+    "name": "Bhaisali",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.98836,
+    "longitude": 77.71026,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-begumpul",
+    "name": "Begumpul",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 28.99607,
+    "longitude": 77.71797,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Meerut Metro",
+      "Delhi–Meerut Namo Bharat (RRTS)"
+    ],
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-mes-colony",
+    "name": "MES Colony",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 29.00378,
+    "longitude": 77.72568,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-daurli",
+    "name": "Daurli",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 29.0115,
+    "longitude": 77.7334,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-meerut-north",
+    "name": "Meerut North",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 29.01921,
+    "longitude": 77.74111,
+    "isInterchange": false,
+    "isTerminal": false,
+    "status": "operational"
+  },
+  {
+    "id": "mee-mm-modipuram",
+    "name": "Modipuram",
+    "cityId": "meerut",
+    "lineIds": [
+      "mee-metro"
+    ],
+    "latitude": 29.02693,
+    "longitude": 77.74883,
+    "isInterchange": true,
+    "interchangeLines": [
+      "Meerut Metro",
+      "Delhi–Meerut Namo Bharat (RRTS)"
+    ],
+    "isTerminal": true,
+    "status": "operational"
+  }
 ];
 
 export const MEERUT_LINES_CONFIG: MetroLine[] = [
   {
-    id: 'mee-metro-1',
-    name: 'Meerut Metro Line 1 (Meerut South - Modipuram)',
-    hindiName: 'मेरठ मेट्रो लाइन 1',
-    code: 'MM1',
-    color: '#E11D48',
-    textColor: '#FFFFFF',
-    strokeWidth: 6,
-    stationIds: [
-      'mee-met-meerut-south',
-      'mee-met-ri-nagar',
-      'mee-met-shatabdi-nagar',
-      'mee-met-brahmpuri',
-      'mee-met-meerut-central',
-      'mee-met-bhainsali',
-      'mee-met-begumpul',
-      'mee-met-modipuram',
-    ],
-  },
+    "id": "mee-metro",
+    "name": "Meerut Metro",
+    "hindiName": "मेरठ मेट्रो",
+    "code": "MM",
+    "color": "#EF4444",
+    "textColor": "#FFFFFF",
+    "strokeWidth": 6,
+    "status": "operational",
+    "stationIds": [
+      "mee-mm-meerut-south",
+      "mee-mm-partapur",
+      "mee-mm-rithani",
+      "mee-mm-shatabdi-nagar",
+      "mee-mm-brahmapuri",
+      "mee-mm-meerut-central",
+      "mee-mm-bhaisali",
+      "mee-mm-begumpul",
+      "mee-mm-mes-colony",
+      "mee-mm-daurli",
+      "mee-mm-meerut-north",
+      "mee-mm-modipuram"
+    ]
+  }
 ];
