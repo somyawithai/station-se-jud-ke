@@ -1,0 +1,6 @@
+{
+  "name": "Station Se Jud Ke",
+  "description": "Interactive India metro network explorer and nearest station connector.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
