@@ -153,15 +153,19 @@ export function computeStationLabelPlacements(
 
   const isMobile = viewportWidth < 768;
 
-  // Zoom LOD thresholds adapted for screen size
+  // Zoom LOD thresholds for progressive disclosure
+  // - Low zoom (<= 1.25): Overview of network, only major interchanges/terminals/selected
+  // - Medium zoom (1.25 - 2.1): Interchanges + well-spaced intermediate stations
+  // - High zoom (2.1 - 3.0): Dense station reveal with collision avoidance
+  // - Very close zoom (> 3.0): 100% stations visible with multi-angle offset placement
   const lod = {
-    isFar: currentScale < (isMobile ? 0.95 : 0.85),
-    isMedium: currentScale >= (isMobile ? 0.95 : 0.85) && currentScale < (isMobile ? 1.45 : 1.35),
-    isClose: currentScale >= (isMobile ? 1.45 : 1.35) && currentScale < (isMobile ? 2.1 : 1.9),
-    isVeryClose: currentScale >= (isMobile ? 2.1 : 1.9),
+    isOverview: currentScale <= (isMobile ? 1.35 : 1.25),
+    isMedium: currentScale > (isMobile ? 1.35 : 1.25) && currentScale <= (isMobile ? 2.2 : 2.1),
+    isHigh: currentScale > (isMobile ? 2.2 : 2.1) && currentScale <= (isMobile ? 3.0 : 2.9),
+    isMaxZoom: currentScale > (isMobile ? 3.0 : 2.9),
   };
 
-  // 1. Sort stations by priority descending (Selected > Hovered > Interchange > Terminal > Major > Normal)
+  // 1. Sort stations by priority descending (Selected > Hovered > Interchange > Terminal > Popular > Normal)
   const prioritizedStations = [...stations].map((st) => ({
     station: st,
     priority: calculateStationPriority(st, selectedStationId, hoveredStationId, popularStations),
@@ -198,31 +202,33 @@ export function computeStationLabelPlacements(
     let shouldAttemptPlacement = false;
 
     if (isSelected || isHovered) {
+      // Always show selected or hovered station label
       shouldAttemptPlacement = true;
-    } else if (lod.isFar) {
-      // Far zoom: ONLY major interchanges and terminals
+    } else if (lod.isOverview) {
+      // Low / Overview zoom: ONLY major interchanges and terminals
+      // This prevents crowding when viewing the full city network
       shouldAttemptPlacement = isInterchange || isTerminal;
     } else if (lod.isMedium) {
-      // Medium zoom: Interchanges, terminals, popular, or spaced normals
+      // Medium zoom: Interchanges, terminals, popular stations, or well-spaced intermediate stations
       if (isInterchange || isTerminal || popularStations.includes(st.id)) {
         shouldAttemptPlacement = true;
       } else {
         // Enforce minimum spatial distance to other placed labels at medium zoom
-        const minDistanceThreshold = isMobile ? 65 : 48;
+        const minDistanceThreshold = isMobile ? 55 : 42;
         const tooCloseToAnother = placedLocations.some(
           (p) => Math.hypot(p.x - st.coordinates.x, p.y - st.coordinates.y) < minDistanceThreshold
         );
         shouldAttemptPlacement = !tooCloseToAnother;
       }
-    } else if (lod.isClose) {
-      // Close zoom: show almost all stations unless heavily cramped
-      const minDistanceThreshold = isMobile ? 32 : 22;
+    } else if (lod.isHigh) {
+      // High zoom: Show most stations unless right on top of another label
+      const minDistanceThreshold = isMobile ? 24 : 18;
       const tooCloseToAnother = placedLocations.some(
         (p) => Math.hypot(p.x - st.coordinates.x, p.y - st.coordinates.y) < minDistanceThreshold
       );
-      shouldAttemptPlacement = isInterchange || !tooCloseToAnother;
+      shouldAttemptPlacement = isInterchange || isTerminal || !tooCloseToAnother;
     } else {
-      // Very close zoom: attempt placement for every single station
+      // Maximum zoom: Attempt placement for 100% of all stations
       shouldAttemptPlacement = true;
     }
 
@@ -258,7 +264,7 @@ export function computeStationLabelPlacements(
     for (const dir of STATION_DIRECTIONS) {
       for (const dist of DISTANCE_OFFSETS) {
         // At close zooms, prefer immediate compact offset (14 or 22)
-        if (dist > 32 && !isInterchange && !isSelected && !lod.isFar) {
+        if (dist > 32 && !isInterchange && !isSelected && !lod.isOverview) {
           continue;
         }
 

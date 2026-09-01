@@ -148,6 +148,32 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
   }, [citySearchQuery]);
 
   // Zoom handlers
+  const [selectedCityTransition, setSelectedCityTransition] = useState<string | null>(null);
+
+  const handleSelectCityWithZoom = (cityId: string, station?: MetroStation) => {
+    if (selectedCityTransition) return;
+    const hub = NATIONAL_METRO_HUBS.find((h) => h.id === cityId);
+    setSelectedCityTransition(cityId);
+
+    if (hub && mapContainerRef.current) {
+      const container = mapContainerRef.current.getBoundingClientRect();
+      const targetScale = 3.2;
+      const svgCenterX = INDIA_MAP_WIDTH / 2;
+      const svgCenterY = INDIA_MAP_HEIGHT / 2;
+      const dx = (svgCenterX - hub.x) * (container.width / INDIA_MAP_WIDTH) * (targetScale * 0.85);
+      const dy = (svgCenterY - hub.y) * (container.height / INDIA_MAP_HEIGHT) * (targetScale * 0.85);
+
+      setMapPan({ x: dx, y: dy });
+      setMapScale(targetScale);
+
+      setTimeout(() => {
+        onSelectCity(cityId, station);
+      }, 360);
+    } else {
+      onSelectCity(cityId, station);
+    }
+  };
+
   const handleZoom = (delta: number) => {
     setMapScale((prev) => {
       const next = Math.min(Math.max(prev + delta, 0.75), 3.5);
@@ -307,7 +333,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                         onClick={() => {
                           setIsCitySearchFocused(false);
                           setCitySearchQuery('');
-                          onSelectCity(city.id);
+                          handleSelectCityWithZoom(city.id);
                         }}
                         className="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800/80 transition flex items-center justify-between group"
                       >
@@ -531,7 +557,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                     className="cursor-pointer group"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onSelectCity(hub.id);
+                      handleSelectCityWithZoom(hub.id);
                     }}
                     onMouseEnter={() => setActiveHubHover(hub)}
                     onMouseLeave={() => setActiveHubHover(null)}
@@ -596,7 +622,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
                     className="cursor-pointer group select-none transition-transform duration-200"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onSelectCity(hub.id);
+                      handleSelectCityWithZoom(hub.id);
                     }}
                     onMouseEnter={() => setActiveHubHover(hub)}
                     onMouseLeave={() => setActiveHubHover(null)}
@@ -695,7 +721,7 @@ export const IndiaLandingMap: React.FC<IndiaLandingMapProps> = ({
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-800/80 text-xs">
                 <span className="text-slate-400 font-mono">{activeHubHover.totalStations} Stations</span>
                 <button
-                  onClick={() => onSelectCity(activeHubHover.id)}
+                  onClick={() => handleSelectCityWithZoom(activeHubHover.id)}
                   className="px-3.5 py-1.5 rounded-xl bg-[#FF6B00] hover:bg-[#FF7700] text-slate-950 font-bold text-xs tracking-wide transition flex items-center gap-1 shadow-md"
                 >
                   <span>Explore</span>

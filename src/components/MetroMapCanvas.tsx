@@ -178,7 +178,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
   // Handle Zoom controls
   const handleZoom = (delta: number) => {
     setScale((prev) => {
-      const next = Math.min(Math.max(prev + delta, 0.6), 3.8);
+      const next = Math.min(Math.max(prev + delta, 0.65), 4.8);
       return Number(next.toFixed(2));
     });
   };
@@ -209,8 +209,38 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    const zoomFactor = -e.deltaY * 0.0012;
-    setScale((prev) => Math.min(Math.max(prev + zoomFactor, 0.6), 3.8));
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+
+    const zoomFactor = Math.exp(-e.deltaY * 0.0015);
+    setScale((prevScale) => {
+      const nextScale = Math.min(Math.max(prevScale * zoomFactor, 0.65), 4.8);
+      const actualRatio = nextScale / prevScale;
+      setPan((currentPan) => ({
+        x: mouseX - (mouseX - currentPan.x) * actualRatio,
+        y: mouseY - (mouseY - currentPan.y) * actualRatio,
+      }));
+      return Number(nextScale.toFixed(2));
+    });
+  };
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+
+    setScale((prevScale) => {
+      const nextScale = Math.min(prevScale * 1.5, 4.8);
+      const actualRatio = nextScale / prevScale;
+      setPan((currentPan) => ({
+        x: mouseX - (mouseX - currentPan.x) * actualRatio,
+        y: mouseY - (mouseY - currentPan.y) * actualRatio,
+      }));
+      return Number(nextScale.toFixed(2));
+    });
   };
 
   // Touch Handlers for Mobile Pan & Pinch-to-zoom
@@ -241,7 +271,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
       const touch2 = e.touches[1];
       const currentDist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
       const scaleMultiplier = currentDist / touchStartDistRef.current;
-      setScale((prev) => Math.min(Math.max(prev * scaleMultiplier, 0.6), 3.8));
+      setScale((prev) => Math.min(Math.max(prev * scaleMultiplier, 0.65), 4.8));
       touchStartDistRef.current = currentDist;
     }
   };
@@ -295,10 +325,10 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
 
   // Determine current Zoom disclosure tier label for UX feedback
   const zoomDisclosureTier = useMemo(() => {
-    if (scale < 0.95) return 'Network Overview (Major Hubs)';
-    if (scale < 1.45) return 'Medium Zoom (Interchanges & Key Stations)';
-    if (scale < 2.2) return 'Detailed View (All Stations Active)';
-    return 'Close Inspection (Full Station Details)';
+    if (scale <= 1.25) return 'Network Overview (Major Hubs)';
+    if (scale <= 2.1) return 'Medium Zoom (Key Interchanges & Corridors)';
+    if (scale <= 3.0) return 'Detailed View (Progressive Stations Active)';
+    return 'Maximum Zoom (All Stations & Details Visible)';
   }, [scale]);
 
   const visibleLabelCount = useMemo(() => {
@@ -520,6 +550,7 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onDoubleClick={handleDoubleClick}
         onWheel={handleWheel}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -527,12 +558,19 @@ export const MetroMapCanvas: React.FC<MetroMapCanvasProps> = ({
       >
         <motion.div
           className="w-full h-full flex items-center justify-center origin-center"
+          initial={{ opacity: 0, scale: 0.88 }}
           animate={{
+            opacity: 1,
             x: pan.x,
             y: pan.y,
             scale: scale,
           }}
-          transition={{ type: 'tween', ease: [0.16, 1, 0.3, 1], duration: isDragging ? 0 : 0.22 }}
+          transition={{
+            opacity: { duration: 0.35, ease: 'easeOut' },
+            scale: { type: 'tween', ease: [0.16, 1, 0.3, 1], duration: isDragging ? 0 : 0.28 },
+            x: { type: 'tween', ease: [0.16, 1, 0.3, 1], duration: isDragging ? 0 : 0.28 },
+            y: { type: 'tween', ease: [0.16, 1, 0.3, 1], duration: isDragging ? 0 : 0.28 },
+          }}
           style={{ willChange: 'transform' }}
         >
           <svg
