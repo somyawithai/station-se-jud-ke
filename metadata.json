@@ -1,0 +1,6 @@
+{
+  "name": "Station Se Jud Ke",
+  "description": "Interactive India Metro Explorer - Find your nearest metro station and connect with the community across 19+ Indian operational metro networks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
