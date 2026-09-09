@@ -472,11 +472,11 @@ export const CityMetroNetworkView: React.FC<CityMetroNetworkViewProps> = ({
                 if (stationQuery && matchingStations.length === 0) return null;
 
                 return (
-                  {/* LAG FIX: line cards are opaque on phones (backdrop-blur from md up). */}
                   <div
                     key={line.id}
                     className="rounded-3xl border border-stone-800 bg-stone-900 p-6 shadow-xl md:bg-stone-900/60 md:backdrop-blur-md"
                   >
+                    {/* LAG FIX: line cards are opaque on phones (backdrop-blur from md up). */}
                     {/* Line Title & Terminus info */}
                     <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-stone-800 pb-4">
                       <div className="flex items-center gap-3">
